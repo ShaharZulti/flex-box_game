@@ -103,6 +103,34 @@
   border-color: #fdba74;
 }
 
+@media (max-width: 600px) {
+  .navbar {
+    padding: 6px 10px;
+  }
+  .nav-brand {
+    font-size: 1.12rem;
+    gap: 6px;
+  }
+  .nav-brand .brand-badge {
+    font-size: 0.62rem;
+    padding: 1px 6px;
+  }
+  .nav-actions {
+    gap: 6px;
+  }
+  .icon-btn {
+    padding: 5px 8px;
+    font-size: 0.78rem;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 400px) {
+  .nav-brand .brand-badge {
+    display: none;
+  }
+}
+
 /* Views Controller */
 .view-section {
   display: none;
@@ -705,6 +733,44 @@
   flex-wrap: wrap;
 }
 
+@media (max-width: 600px) {
+  #game-view {
+    padding: 10px 10px 32px 10px;
+  }
+  .game-sub-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .game-sub-nav #btn-back-home {
+    order: 1;
+    padding: 6px 12px;
+    font-size: 0.82rem;
+  }
+  .game-sub-nav #btn-open-guide {
+    order: 2;
+    padding: 6px 12px;
+    font-size: 0.82rem;
+  }
+  .level-title-badge {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    padding: 5px 12px;
+    margin-top: 2px;
+  }
+  #level-badge-title {
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+  }
+}
+
 .level-title-badge {
   display: flex;
   align-items: center;
@@ -844,6 +910,58 @@
   .game-layout-grid {
     grid-template-columns: 1fr;
     justify-items: center;
+    gap: 16px;
+    width: 100%;
+  }
+  .left-panel {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .right-panel {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .instruction-box {
+    padding: 10px 14px;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .instruction-box .instruction-chef-icon {
+    font-size: 1.4rem;
+  }
+  .instruction-box .instruction-text {
+    font-size: 0.92rem;
+    line-height: 1.38;
+  }
+  .action-toolbar {
+    margin-top: 12px;
+    gap: 8px;
+  }
+  .btn-primary {
+    flex: 1 1 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 10px 16px;
+    font-size: 0.98rem;
+  }
+  .action-toolbar .btn-secondary {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+    padding: 8px 12px;
+    font-size: 0.88rem;
+  }
+  .btn-success {
+    flex: 1 1 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 10px 16px;
+    font-size: 0.98rem;
   }
 }
 
@@ -1070,6 +1188,37 @@
   color: #2b1810;
   margin: 0;
   letter-spacing: 0.5px;
+}
+
+@media (max-width: 600px) {
+  .modal-overlay {
+    padding: 12px;
+  }
+  .modal-card {
+    padding: 18px 14px;
+    border-radius: 18px;
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+  .about-modal-card {
+    padding: 18px 14px;
+    border-radius: 18px;
+  }
+  .about-modal-desc {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    margin-bottom: 14px;
+  }
+  .creators-grid {
+    gap: 16px;
+  }
+  .creator-avatar-wrap {
+    width: 90px;
+    height: 90px;
+  }
+  .creator-name {
+    font-size: 1.1rem;
+  }
 }
 
 

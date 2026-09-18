@@ -69,6 +69,7 @@ class App {
     try { this._initPreferences(); } catch (e) { console.error('Preferences init error:', e); }
     try { this._initEngineAndBuilder(); } catch (e) { console.error('Engine init error:', e); }
     try { this._bindEvents(); } catch (e) { console.error('Events binding error:', e); }
+    try { this.updateBoardScale(); } catch (e) { console.error('Scale init error:', e); }
     try { this.renderHomeDashboard(); } catch (e) { console.error('Dashboard render error:', e); }
     try { this.showHomeView(); } catch (e) { console.error('Show view error:', e); }
   }
@@ -259,6 +260,10 @@ class App {
         }
       });
     }
+
+    // Responsive Board Scaler Listener
+    window.addEventListener('resize', () => this.updateBoardScale());
+    window.addEventListener('orientationchange', () => setTimeout(() => this.updateBoardScale(), 100));
   }
 
   showHomeView() {
@@ -271,7 +276,23 @@ class App {
   showGameView() {
     this.homeView.classList.remove('active');
     this.gameView.classList.add('active');
+    this.updateBoardScale();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  updateBoardScale() {
+    const leftPanel = document.querySelector('.left-panel');
+    const scaler = document.querySelector('.board-viewport-scaler');
+    if (!scaler) return;
+
+    const parentWidth = leftPanel && leftPanel.clientWidth > 50 ? leftPanel.clientWidth : window.innerWidth;
+    const maxAvailable = Math.min(500, Math.floor(parentWidth - 12));
+    if (maxAvailable < 500) {
+      const scale = Math.max(0.45, maxAvailable / 500);
+      document.documentElement.style.setProperty('--board-scale', scale.toFixed(3));
+    } else {
+      document.documentElement.style.setProperty('--board-scale', '1');
+    }
   }
 
   renderHomeDashboard() {
@@ -375,7 +396,7 @@ class App {
 
     // Update Instructions
     this.instructionBox.innerHTML = `
-      <h3>${level.title}</h3>
+      <span class="instruction-chef-icon">👨‍🍳</span>
       <p class="instruction-text">${level.instruction}</p>
     `;
 

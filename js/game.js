@@ -88,6 +88,7 @@ export class GameEngine {
   }
 
   resetFoodStyles() {
+    const scale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--board-scale')) || 1;
     const dishes = Array.from(this.foodLayer.querySelectorAll('.food-item-dish'));
     const firstRects = dishes.map(d => d.getBoundingClientRect());
 
@@ -102,8 +103,8 @@ export class GameEngine {
     dishes.forEach((dish, i) => {
       dish.classList.remove('served');
       if (firstRects[i] && lastRects[i]) {
-        const deltaX = firstRects[i].left - lastRects[i].left;
-        const deltaY = firstRects[i].top - lastRects[i].top;
+        const deltaX = (firstRects[i].left - lastRects[i].left) / scale;
+        const deltaY = (firstRects[i].top - lastRects[i].top) / scale;
         dish.style.transition = 'none';
         dish.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
       }
@@ -124,6 +125,7 @@ export class GameEngine {
   checkSolution(userValues) {
     if (!this.currentLevel) return;
 
+    const scale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--board-scale')) || 1;
     const dishes = Array.from(this.foodLayer.querySelectorAll('.food-item-dish'));
     const firstRects = dishes.map(d => d.getBoundingClientRect());
 
@@ -139,8 +141,8 @@ export class GameEngine {
     // Invert: position dishes back at their start coordinates
     dishes.forEach((dish, i) => {
       if (firstRects[i] && lastRects[i]) {
-        const deltaX = firstRects[i].left - lastRects[i].left;
-        const deltaY = firstRects[i].top - lastRects[i].top;
+        const deltaX = (firstRects[i].left - lastRects[i].left) / scale;
+        const deltaY = (firstRects[i].top - lastRects[i].top) / scale;
         dish.style.transition = 'none';
         dish.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.96)`;
       }

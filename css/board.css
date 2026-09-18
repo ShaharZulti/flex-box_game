@@ -2,15 +2,23 @@
    Board Styles: Fixed 500x500 Dining Table, Guest Targets, Moving Food Items
    ========================================================================== */
 
-/* Scaler container to ensure board is fixed 500x500 across ALL screen sizes */
+/* Scaler container to ensure board maintains fixed 500x500 coordinate space across ALL screen sizes */
+:root {
+  --board-scale: 1;
+}
+
 .board-viewport-scaler {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  width: 100%;
-  overflow: hidden;
+  width: calc(500px * var(--board-scale, 1));
+  height: calc(500px * var(--board-scale, 1));
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+  overflow: visible;
   padding: 0;
-  margin: 0;
+  transition: width 0.15s ease, height 0.15s ease;
 }
 
 .table-frame {
@@ -18,6 +26,11 @@
   height: 500px;
   min-width: 500px;
   min-height: 500px;
+  max-width: 500px;
+  max-height: 500px;
+  transform: scale(var(--board-scale, 1));
+  transform-origin: top center;
+  flex-shrink: 0;
   background: var(--table-wood-1);
   background-image: 
     radial-gradient(circle at 50% 50%, var(--table-wood-1) 0%, var(--table-wood-2) 100%),
@@ -34,24 +47,34 @@
   transition: transform 0.2s ease;
 }
 
-/* Scaling for smaller screens without changing fixed 500x500 coordinate space */
-@media (max-width: 560px) {
-  .board-viewport-scaler {
-    height: 360px;
-  }
-  .table-frame {
-    transform: scale(0.68);
-    transform-origin: center center;
+/* Responsive CSS Fallbacks for various screen sizes (JS refines this dynamically) */
+@media (max-width: 540px) {
+  :root {
+    --board-scale: 0.88;
   }
 }
 
-@media (max-width: 400px) {
-  .board-viewport-scaler {
-    height: 310px;
+@media (max-width: 480px) {
+  :root {
+    --board-scale: 0.78;
   }
-  .table-frame {
-    transform: scale(0.58);
-    transform-origin: center center;
+}
+
+@media (max-width: 420px) {
+  :root {
+    --board-scale: 0.70;
+  }
+}
+
+@media (max-width: 375px) {
+  :root {
+    --board-scale: 0.62;
+  }
+}
+
+@media (max-width: 330px) {
+  :root {
+    --board-scale: 0.54;
   }
 }
 
