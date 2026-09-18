@@ -88,30 +88,78 @@ export class GameEngine {
   }
 
   resetFoodStyles() {
+    const dishes = Array.from(this.foodLayer.querySelectorAll('.food-item-dish'));
+    const firstRects = dishes.map(d => d.getBoundingClientRect());
+
     this.foodLayer.style.display = 'flex';
     this.foodLayer.style.flexDirection = 'row';
     this.foodLayer.style.justifyContent = 'flex-start';
     this.foodLayer.style.alignItems = 'flex-start';
     this.foodLayer.style.flexWrap = 'nowrap';
 
-    const dishes = this.foodLayer.querySelectorAll('.food-item-dish');
-    dishes.forEach(d => d.classList.remove('served'));
+    const lastRects = dishes.map(d => d.getBoundingClientRect());
+
+    dishes.forEach((dish, i) => {
+      dish.classList.remove('served');
+      if (firstRects[i] && lastRects[i]) {
+        const deltaX = firstRects[i].left - lastRects[i].left;
+        const deltaY = firstRects[i].top - lastRects[i].top;
+        dish.style.transition = 'none';
+        dish.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+      }
+    });
+
+    void this.foodLayer.offsetHeight;
+
+    requestAnimationFrame(() => {
+      dishes.forEach(dish => {
+        dish.style.transition = 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)';
+        dish.style.transform = 'translate(0px, 0px)';
+      });
+    });
+
     this.tableFrame.classList.remove('victory-glow', 'shake-error');
   }
 
   checkSolution(userValues) {
     if (!this.currentLevel) return;
 
+    const dishes = Array.from(this.foodLayer.querySelectorAll('.food-item-dish'));
+    const firstRects = dishes.map(d => d.getBoundingClientRect());
+
     // Apply user choices to food layer
     this.foodLayer.style.display = 'flex';
-    if (userValues['flex-direction']) this.foodLayer.style.flexDirection = userValues['flex-direction'];
-    if (userValues['justify-content']) this.foodLayer.style.justifyContent = userValues['justify-content'];
-    if (userValues['align-items']) this.foodLayer.style.alignItems = userValues['align-items'];
-    if (userValues['flex-wrap']) this.foodLayer.style.flexWrap = userValues['flex-wrap'];
+    this.foodLayer.style.flexDirection = userValues['flex-direction'] || 'row';
+    this.foodLayer.style.justifyContent = userValues['justify-content'] || 'flex-start';
+    this.foodLayer.style.alignItems = userValues['align-items'] || 'flex-start';
+    this.foodLayer.style.flexWrap = userValues['flex-wrap'] || 'nowrap';
+
+    const lastRects = dishes.map(d => d.getBoundingClientRect());
+
+    // Invert: position dishes back at their start coordinates
+    dishes.forEach((dish, i) => {
+      if (firstRects[i] && lastRects[i]) {
+        const deltaX = firstRects[i].left - lastRects[i].left;
+        const deltaY = firstRects[i].top - lastRects[i].top;
+        dish.style.transition = 'none';
+        dish.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.96)`;
+      }
+    });
+
+    // Trigger browser reflow
+    void this.foodLayer.offsetHeight;
 
     sound.playServe();
 
-    // Allow CSS transition to finish before computing exact overlap
+    // Play: Glide smoothly with bouncy spring easing
+    requestAnimationFrame(() => {
+      dishes.forEach(dish => {
+        dish.style.transition = 'transform 0.65s cubic-bezier(0.34, 1.4, 0.64, 1)';
+        dish.style.transform = 'translate(0px, 0px) scale(1)';
+      });
+    });
+
+    // Allow CSS animation to finish before checking validation
     return new Promise((resolve) => {
       setTimeout(() => {
         const isMatch = this._validateMatch(userValues);
@@ -123,7 +171,7 @@ export class GameEngine {
           this._handleFailure(userValues);
           resolve({ success: false });
         }
-      }, 550);
+      }, 700);
     });
   }
 
