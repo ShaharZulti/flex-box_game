@@ -63,7 +63,7 @@ export const LEVELS = [
     foodName: "Salmon Sushi Roll",
     itemCount: 2,
     hasOrderLabels: false,
-    instruction: "Welcome to Tokyo! Two hungry Japanese guests are seated at the far right end of the dining counter. Slide the sushi rolls onto their plates!",
+    instruction: "Welcome to Tokyo! Two hungry Japanese guests are waiting, Slide the sushi rolls onto their plates!",
     slots: [
       { property: "justify-content", placeholder: "choose value" }
     ],
@@ -93,7 +93,7 @@ export const LEVELS = [
     foodName: "Hot Pepperoni Pizza",
     itemCount: 2,
     hasOrderLabels: false,
-    instruction: "Mamma Mia! The Italian chefs are seated along the vertical center of the table. Slide the pizza slices down to their plates!",
+    instruction: "Mamma Mia! The Italian guests are waiting, Slide the pizza slices down to their plates!",
     slots: [
       { property: "align-items", placeholder: "choose value" }
     ],
@@ -115,15 +115,16 @@ export const LEVELS = [
   },
   {
     id: 3,
-    title: "Taco Fiesta Reversal",
-    subtitle: "Mexican Cantina",
-    characterImg: "assets/characters/mexican.png",
-    characterName: "Mexican Amigo",
-    foodImg: "assets/foods/taco.png",
-    foodName: "Crispy Beef Taco",
+    title: "A Global Celebration",
+    subtitle: "World Cultural Table",
+    characters: [
+      { img: "assets/characters/japanese.png", name: "Japanese Guest", food: "assets/foods/sushi.png", foodName: "Sushi" },
+      { img: "assets/characters/italian.png", name: "Italian Chef", food: "assets/foods/pizza.png", foodName: "Pizza" },
+      { img: "assets/characters/mexican.png", name: "Mexican Amigo", food: "assets/foods/taco.png", foodName: "Taco" }
+    ],
     itemCount: 3,
-    hasOrderLabels: true,
-    instruction: "Notice the guest order numbers: Amigo #3 is seated on the left and Amigo #1 is on the right! Deliver each numbered taco to its matching amigo.",
+    hasOrderLabels: false,
+    instruction: "A global celebration! All worlds come together. Give everyone their own dish.",
     slots: [
       { property: "flex-direction", placeholder: "choose value" }
     ],
@@ -150,10 +151,10 @@ export const LEVELS = [
     characterImg: "assets/characters/israeli.png",
     characterName: "Israeli Guest",
     foodImg: "assets/foods/drink.png",
-    foodName: "Iced Lemon Drink",
+    foodName: "Vodka & Red Bull",
     itemCount: 3,
     hasOrderLabels: false,
-    instruction: "A hot summer day in Tel Aviv! Three guests are sitting in the vertical center, spread evenly from one edge of the table to the other. Serve their cold drinks!",
+    instruction: "A hot summer day in Tel Aviv! Three guests waiting to there vodka & red bull.",
     slots: [
       { property: "justify-content", placeholder: "main axis spacing" },
       { property: "align-items", placeholder: "cross axis position" }
@@ -180,7 +181,7 @@ export const LEVELS = [
   },
   {
     id: 5,
-    title: "Kyoto Vertical Bento Express",
+    title: "Kyoto Traditional Dining",
     subtitle: "Kyoto Tea House",
     characterImg: "assets/characters/japanese.png",
     characterName: "Japanese Guest",
@@ -188,7 +189,7 @@ export const LEVELS = [
     foodName: "Salmon Sushi Roll",
     itemCount: 3,
     hasOrderLabels: false,
-    instruction: "In a cozy traditional dining room, the guests are seated in a vertical line from top to bottom, right in the middle of the table. Serve their sushi!",
+    instruction: "In a cozy traditional dining room, the guests are alredy seated. Serve the sushi to the guests!",
     slots: [
       { property: "flex-direction", placeholder: "axis direction" },
       { property: "align-items", placeholder: "cross axis alignment" }
@@ -222,7 +223,7 @@ export const LEVELS = [
     foodName: "Crispy Beef Taco",
     itemCount: 6,
     hasOrderLabels: false,
-    instruction: "Fiesta time! Six hungry amigos are seated across two rows at the table. Serve all six tacos so everyone gets fed!",
+    instruction: "Fiesta time! Serve all six tacos so everyone gets fed!",
     slots: [
       { property: "flex-wrap", placeholder: "multi-line wrapping" },
       { property: "justify-content", placeholder: "spacing distribution" }
@@ -250,16 +251,16 @@ export const LEVELS = [
   },
   {
     id: 7,
-    title: "The Grand International Banquet",
+    title: "The Grand Finale!",
     subtitle: "World Summit VIP Table",
     characters: [
-      { img: "assets/characters/japanese.png", name: "Japanese Guest", food: "assets/foods/sushi.png", foodName: "Sushi", order: 1 },
-      { img: "assets/characters/italian.png", name: "Italian Chef", food: "assets/foods/pizza.png", foodName: "Pizza", order: 2 },
-      { img: "assets/characters/israeli.png", name: "Israeli Guest", food: "assets/foods/drink.png", foodName: "Drink", order: 3 }
+      { img: "assets/characters/japanese.png", name: "Japanese Guest", food: "assets/foods/sushi.png", foodName: "Sushi" },
+      { img: "assets/characters/italian.png", name: "Italian Chef", food: "assets/foods/pizza.png", foodName: "Pizza" },
+      { img: "assets/characters/israeli.png", name: "Israeli Guest", food: "assets/foods/drink.png", foodName: "Vodka & Red Bull" }
     ],
     itemCount: 3,
-    hasOrderLabels: true,
-    instruction: "The Grand Finale! Three international guests are seated in reverse vertical order (#3 at top, #1 at bottom) along the right edge of the table. Deliver the feast to their plates!",
+    hasOrderLabels: false,
+    instruction: "The Grand Finale! Three international guests are seated. Deliver the feast to their plates!",
     slots: [
       { property: "flex-direction", placeholder: "vertical reversed" },
       { property: "justify-content", placeholder: "space distribution" },

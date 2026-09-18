@@ -39,23 +39,21 @@ class App {
     this.editorContainer = document.getElementById('code-editor-box');
     this.chipsPool = document.getElementById('chips-pool');
 
-    // Guide Elements (!)
+    // Guide Modal Elements (!)
     this.btnOpenGuide = document.getElementById('btn-open-guide');
     this.guideModal = document.getElementById('guide-modal');
     this.btnCloseGuide = document.getElementById('btn-close-guide');
-    this.btnCloseGuideX = document.getElementById('btn-close-guide-x');
+    this.btnGuideGotIt = document.getElementById('btn-guide-got-it');
     this.guideTabs = document.getElementById('guide-tabs');
     this.guideContentPane = document.getElementById('guide-content-pane');
 
-    // Action Buttons
+    // Action Buttons & Inline Feedback (No popups!)
     this.btnServe = document.getElementById('btn-serve-check');
     this.btnResetLevel = document.getElementById('btn-reset-level');
     this.btnNextLevel = document.getElementById('btn-next-level');
+    this.levelSuccessBanner = document.getElementById('level-success-banner');
 
     // Modals & Toast
-    this.successModal = document.getElementById('success-modal');
-    this.btnModalNext = document.getElementById('btn-modal-next');
-    this.btnModalMenu = document.getElementById('btn-modal-menu');
     this.trophyModal = document.getElementById('trophy-modal');
     this.btnTrophyRestart = document.getElementById('btn-trophy-restart');
     this.btnTrophyMenu = document.getElementById('btn-trophy-menu');
@@ -87,8 +85,11 @@ class App {
       editorContainer: this.editorContainer,
       chipsPool: this.chipsPool,
       onValueChange: () => {
-        // Hide next level button if player modifies code after solving
+        // Hide next level button and banner if player modifies code
         this.btnNextLevel.style.display = 'none';
+        if (this.levelSuccessBanner) {
+          this.levelSuccessBanner.style.display = 'none';
+        }
       }
     });
 
@@ -168,6 +169,9 @@ class App {
       this.codeBuilder.reset();
       this.gameEngine.resetFoodStyles();
       this.btnNextLevel.style.display = 'none';
+      if (this.levelSuccessBanner) {
+        this.levelSuccessBanner.style.display = 'none';
+      }
       this._showToast('Table reset to default.', 'info');
     });
 
@@ -177,29 +181,22 @@ class App {
       this.goToNextLevel();
     });
 
-    // Success Modal buttons
-    this.btnModalNext.addEventListener('click', () => {
-      this.hideModal(this.successModal);
-      this.goToNextLevel();
-    });
+    // Trophy Modal buttons (Final 100% win celebration)
+    if (this.btnTrophyRestart) {
+      this.btnTrophyRestart.addEventListener('click', () => {
+        this.hideModal(this.trophyModal);
+        this.loadLevel(0);
+      });
+    }
 
-    this.btnModalMenu.addEventListener('click', () => {
-      this.hideModal(this.successModal);
-      this.showHomeView();
-    });
+    if (this.btnTrophyMenu) {
+      this.btnTrophyMenu.addEventListener('click', () => {
+        this.hideModal(this.trophyModal);
+        this.showHomeView();
+      });
+    }
 
-    // Trophy Modal buttons
-    this.btnTrophyRestart.addEventListener('click', () => {
-      this.hideModal(this.trophyModal);
-      this.loadLevel(0);
-    });
-
-    this.btnTrophyMenu.addEventListener('click', () => {
-      this.hideModal(this.trophyModal);
-      this.showHomeView();
-    });
-
-    // Flexbox Guide Modal (!)
+    // Guide Modal (!)
     if (this.btnOpenGuide) {
       this.btnOpenGuide.addEventListener('click', () => {
         sound.playClick();
@@ -211,13 +208,23 @@ class App {
 
     if (this.btnCloseGuide) {
       this.btnCloseGuide.addEventListener('click', () => {
-        this.hideModal(this.guideModal);
+        sound.playClick();
+        this.closeGuide();
       });
     }
 
-    if (this.btnCloseGuideX) {
-      this.btnCloseGuideX.addEventListener('click', () => {
-        this.hideModal(this.guideModal);
+    if (this.btnGuideGotIt) {
+      this.btnGuideGotIt.addEventListener('click', () => {
+        sound.playClick();
+        this.closeGuide();
+      });
+    }
+
+    if (this.guideModal) {
+      this.guideModal.addEventListener('click', (e) => {
+        if (e.target === this.guideModal) {
+          this.closeGuide();
+        }
       });
     }
 
@@ -258,12 +265,12 @@ class App {
     // Render cards
     this.levelsGrid.innerHTML = '';
     LEVELS.forEach((lvl, idx) => {
-      const isDone = completed.includes(lvl.id);
+      const isDone = storage.isLevelCompleted(lvl.id);
+      const isUnlocked = storage.isLevelUnlocked(lvl.id);
       const card = document.createElement('div');
-      card.className = `level-card ${isDone ? 'completed' : ''}`;
+      card.className = `level-card ${isDone ? 'completed' : ''} ${!isUnlocked ? 'locked' : ''}`;
       
       const thumb = lvl.characters ? lvl.characters[0].img : lvl.characterImg;
-      const foodThumb = lvl.characters ? lvl.characters[0].food : lvl.foodImg;
 
       card.innerHTML = `
         <div>
@@ -281,13 +288,18 @@ class App {
           </div>
         </div>
         <div>
-          <button class="level-card-btn">
-            ${isDone ? 'Replay Level ↻' : 'Start Level ▶'}
+          <button class="level-card-btn ${!isUnlocked ? 'locked-btn' : ''}" ${!isUnlocked ? 'disabled' : ''}>
+            ${!isUnlocked ? '🔒 Locked' : (isDone ? 'Replay Level ↻' : 'Start Level ▶')}
           </button>
         </div>
       `;
 
       card.addEventListener('click', () => {
+        if (!isUnlocked) {
+          sound.playError();
+          this._showToast(`Level ${lvl.id} is locked! Complete Level ${lvl.id - 1} first to unlock.`, 'error');
+          return;
+        }
         sound.playClick();
         this.loadLevel(idx);
       });
@@ -298,8 +310,16 @@ class App {
 
   loadLevel(index) {
     if (index < 0 || index >= LEVELS.length) return;
-    this.currentLevelIndex = index;
     const level = LEVELS[index];
+
+    // Verify unlocked state
+    if (!storage.isLevelUnlocked(level.id)) {
+      sound.playError();
+      this._showToast(`Level ${level.id} is locked! Complete previous levels first.`, 'error');
+      return;
+    }
+
+    this.currentLevelIndex = index;
 
     // Update Header & Badge
     this.levelBadgeNumber.textContent = `Level ${level.id} of ${LEVELS.length}`;
@@ -313,6 +333,9 @@ class App {
 
     // Reset controls & board
     this.btnNextLevel.style.display = 'none';
+    if (this.levelSuccessBanner) {
+      this.levelSuccessBanner.style.display = 'none';
+    }
     this.codeBuilder.loadLevel(level);
     this.gameEngine.loadLevel(level);
 
@@ -321,7 +344,15 @@ class App {
 
   openGuide(propertyToSelect = 'justify-content') {
     this.switchGuideTab(propertyToSelect);
-    this.showModal(this.guideModal);
+    if (this.guideModal) {
+      this.showModal(this.guideModal);
+    }
+  }
+
+  closeGuide() {
+    if (this.guideModal) {
+      this.hideModal(this.guideModal);
+    }
   }
 
   switchGuideTab(property) {
@@ -356,6 +387,10 @@ class App {
 
   _handleLevelSuccess(level) {
     this.btnNextLevel.style.display = 'inline-flex';
+    if (this.levelSuccessBanner) {
+      this.levelSuccessBanner.style.display = 'flex';
+      this.levelSuccessBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
 
     const completed = storage.getCompletedLevels();
     const allCleared = LEVELS.every(l => completed.includes(l.id));
@@ -364,21 +399,8 @@ class App {
       // Grand Finale!
       setTimeout(() => {
         this._showTrophyModal();
-      }, 1000);
-    } else {
-      // Regular level win modal
-      setTimeout(() => {
-        this._showSuccessModal(level);
-      }, 800);
+      }, 1200);
     }
-  }
-
-  _showSuccessModal(level) {
-    const modalDesc = document.getElementById('modal-success-desc');
-    if (modalDesc) {
-      modalDesc.innerHTML = `Magnificent job, Chef! The dishes aligned with culinary precision.`;
-    }
-    this.showModal(this.successModal);
   }
 
   _showTrophyModal() {

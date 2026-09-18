@@ -195,6 +195,35 @@
   font-weight: bold;
 }
 
+.level-card.locked {
+  opacity: 0.65;
+  cursor: not-allowed;
+  filter: grayscale(0.6);
+  border-style: dashed;
+}
+
+.level-card.locked:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--border-color);
+}
+
+.level-card.locked::after {
+  content: "🔒";
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
 .level-card-header {
   display: flex;
   align-items: center;
@@ -262,6 +291,19 @@
 
 .level-card-btn:hover {
   background: var(--accent-primary-hover);
+}
+
+.level-card-btn:disabled,
+.level-card-btn.locked-btn {
+  background: var(--border-color);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.level-card-btn:disabled:hover,
+.level-card-btn.locked-btn:hover {
+  background: var(--border-color);
+  transform: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -334,6 +376,7 @@
   border-radius: var(--radius-md);
   padding: 16px 20px;
   box-shadow: var(--shadow-sm);
+  margin-bottom: 24px;
 }
 
 .instruction-box h3 {
@@ -486,30 +529,25 @@
   border-color: #059669;
 }
 
-.inline-guide-drawer {
-  background: var(--bg-secondary);
-  border: 2px solid var(--accent-secondary);
-  border-radius: var(--radius-md);
-  padding: 16px 20px;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow-md);
+.guide-modal-card {
+  max-width: 600px;
+  width: 92%;
+  text-align: left;
+  padding: 24px;
+  max-height: 88vh;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  animation: slideDownDrawer 0.25s ease-out;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid var(--accent-secondary);
 }
 
-@keyframes slideDownDrawer {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.guide-drawer-header {
+.guide-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 10px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
 }
 
 .btn-drawer-close {

@@ -104,6 +104,11 @@
   background: rgba(16, 185, 129, 0.2);
   color: #a6e3a1;
   font-weight: 600;
+  cursor: pointer;
+}
+
+.drop-slot.filled:hover {
+  filter: brightness(1.15);
 }
 
 .drop-slot .slot-placeholder {
@@ -111,19 +116,6 @@
   font-style: italic;
   font-size: 0.8rem;
   pointer-events: none;
-}
-
-.drop-slot .chip-remove-x {
-  margin-left: 8px;
-  cursor: pointer;
-  color: #f38ba8;
-  font-weight: bold;
-  font-size: 0.9rem;
-}
-
-.drop-slot .chip-remove-x:hover {
-  color: #ff5555;
-  transform: scale(1.2);
 }
 
 /* --------------------------------------------------------------------------

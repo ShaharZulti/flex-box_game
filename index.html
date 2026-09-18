@@ -99,29 +99,7 @@
         <!-- Injected dynamically -->
       </div>
 
-      <!-- Inline Flexbox Reference Drawer (Zero Popups!) -->
-      <div id="inline-guide-drawer" class="inline-guide-drawer" style="display: none;">
-        <div class="guide-drawer-header">
-          <div class="guide-title-area">
-            <span class="guide-badge-icon">!</span>
-            <strong style="font-size: 1.05rem;">Flexbox Chef Reference</strong>
-          </div>
-          <button id="btn-close-guide" class="btn-drawer-close" aria-label="Close Guide">&times;</button>
-        </div>
-        
-        <!-- Property Tabs -->
-        <div class="guide-tabs" id="guide-tabs">
-          <button class="guide-tab-btn active" data-property="justify-content">justify-content</button>
-          <button class="guide-tab-btn" data-property="align-items">align-items</button>
-          <button class="guide-tab-btn" data-property="flex-direction">flex-direction</button>
-          <button class="guide-tab-btn" data-property="flex-wrap">flex-wrap</button>
-        </div>
 
-        <!-- Guide Content Pane -->
-        <div class="guide-content-pane" id="guide-content-pane">
-          <!-- Injected dynamically by app.js -->
-        </div>
-      </div>
 
       <!-- Split Layout: Table on Left, Code Builder on Right -->
       <div class="game-layout-grid">
@@ -181,6 +159,40 @@
     <footer class="site-footer">
       <p>World Bistro Flexbox Game &bull; College Web Development Assignment 2 &bull; Built with Pure HTML5, CSS3 &amp; Vanilla JavaScript</p>
     </footer>
+  </div>
+
+  <!-- ====================================================================
+       FLEXBOX REFERENCE GUIDE POPUP MODAL (!)
+       ==================================================================== -->
+  <div class="modal-overlay" id="guide-modal" role="dialog" aria-modal="true" aria-labelledby="guide-modal-title">
+    <div class="modal-card guide-modal-card">
+      <div class="guide-modal-header">
+        <div class="guide-title-area">
+          <span class="guide-badge-icon">!</span>
+          <h2 id="guide-modal-title" style="font-size: 1.25rem; font-weight: 800; margin: 0;">Flexbox Chef Reference</h2>
+        </div>
+        <button id="btn-close-guide" class="btn-drawer-close" aria-label="Close Guide">&times;</button>
+      </div>
+
+      <!-- Property Tabs -->
+      <div class="guide-tabs" id="guide-tabs">
+        <button class="guide-tab-btn active" data-property="justify-content">justify-content</button>
+        <button class="guide-tab-btn" data-property="align-items">align-items</button>
+        <button class="guide-tab-btn" data-property="flex-direction">flex-direction</button>
+        <button class="guide-tab-btn" data-property="flex-wrap">flex-wrap</button>
+      </div>
+
+      <!-- Guide Content Pane -->
+      <div class="guide-content-pane" id="guide-content-pane">
+        <!-- Injected dynamically by app.js -->
+      </div>
+
+      <div class="modal-actions" style="margin-top: 16px;">
+        <button id="btn-guide-got-it" class="btn-primary" style="width: 100%;">
+          Got it, Chef! 👍
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- ====================================================================

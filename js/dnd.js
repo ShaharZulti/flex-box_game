@@ -178,19 +178,15 @@ export class CodeBuilder {
 
     this.slotValues[property] = value;
     slot.classList.add('filled');
-    slot.innerHTML = `
-      <span class="code-val-chosen">${value}</span>
-      <span class="chip-remove-x" title="Clear value" aria-label="Clear value">&times;</span>
-    `;
+    slot.innerHTML = `<span class="code-val-chosen">${value}</span>`;
 
-    const removeBtn = slot.querySelector('.chip-remove-x');
-    if (removeBtn) {
-      removeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+    // Clicking the filled slot allows resetting it
+    slot.onclick = () => {
+      if (this.slotValues[property]) {
         this.clearSlot(property);
         sound.playClick();
-      });
-    }
+      }
+    };
 
     this._updateChipsState();
     this.onValueChange(this.getValues());
@@ -203,6 +199,7 @@ export class CodeBuilder {
     delete this.slotValues[property];
     slot.classList.remove('filled');
     slot.innerHTML = `<span class="slot-placeholder">&lt;drop here&gt;</span>`;
+    slot.onclick = null;
 
     this._updateChipsState();
     this.onValueChange(this.getValues());

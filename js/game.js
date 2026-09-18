@@ -178,33 +178,9 @@ export class GameEngine {
   _validateMatch(userValues) {
     const winning = this.currentLevel.winningSolution;
     
-    // 1. Exact CSS property comparison
-    let exactMatch = true;
+    // Strictly require exact matching CSS properties for the level solution
     for (const [prop, targetVal] of Object.entries(winning)) {
       if (userValues[prop] !== targetVal) {
-        exactMatch = false;
-        break;
-      }
-    }
-    if (exactMatch) {
-      return true;
-    }
-
-    // 2. Spatial bounding rect verification (allows visual equivalents)
-    const targets = Array.from(this.targetLayer.querySelectorAll('.target-guest-slot'));
-    const foods = Array.from(this.foodLayer.querySelectorAll('.food-item-dish'));
-
-    if (targets.length !== foods.length) return false;
-
-    for (let i = 0; i < targets.length; i++) {
-      const tRect = targets[i].getBoundingClientRect();
-      const fRect = foods[i].getBoundingClientRect();
-
-      const distX = Math.abs((tRect.left + tRect.width / 2) - (fRect.left + fRect.width / 2));
-      const distY = Math.abs((tRect.top + tRect.height / 2) - (fRect.top + fRect.height / 2));
-
-      // 30px threshold tolerance for scaled viewports
-      if (distX > 30 || distY > 30) {
         return false;
       }
     }

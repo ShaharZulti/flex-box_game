@@ -25,6 +25,11 @@ export const storage = {
     return completed.includes(levelId);
   },
 
+  isLevelUnlocked(levelId) {
+    if (levelId <= 1) return true;
+    return this.isLevelCompleted(levelId - 1);
+  },
+
   markLevelCompleted(levelId) {
     try {
       const completed = new Set(this.getCompletedLevels());
