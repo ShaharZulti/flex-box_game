@@ -2,7 +2,7 @@
    Main Application Controller: Views, Events, Modals & Life-cycle
    ========================================================================== */
 
-import { LEVELS } from './levels.js';
+import { LEVELS, FLEXBOX_GUIDE } from './levels.js';
 import { sound } from './audio.js';
 import { confetti } from './confetti.js';
 import { storage } from './storage.js';
@@ -38,6 +38,14 @@ class App {
     this.foodLayer = document.getElementById('layer-food');
     this.editorContainer = document.getElementById('code-editor-box');
     this.chipsPool = document.getElementById('chips-pool');
+
+    // Guide Elements (!)
+    this.btnOpenGuide = document.getElementById('btn-open-guide');
+    this.guideModal = document.getElementById('guide-modal');
+    this.btnCloseGuide = document.getElementById('btn-close-guide');
+    this.btnCloseGuideX = document.getElementById('btn-close-guide-x');
+    this.guideTabs = document.getElementById('guide-tabs');
+    this.guideContentPane = document.getElementById('guide-content-pane');
 
     // Action Buttons
     this.btnServe = document.getElementById('btn-serve-check');
@@ -190,6 +198,38 @@ class App {
       this.hideModal(this.trophyModal);
       this.showHomeView();
     });
+
+    // Flexbox Guide Modal (!)
+    if (this.btnOpenGuide) {
+      this.btnOpenGuide.addEventListener('click', () => {
+        sound.playClick();
+        const level = LEVELS[this.currentLevelIndex];
+        const defaultProp = (level && level.slots[0]) ? level.slots[0].property : 'justify-content';
+        this.openGuide(defaultProp);
+      });
+    }
+
+    if (this.btnCloseGuide) {
+      this.btnCloseGuide.addEventListener('click', () => {
+        this.hideModal(this.guideModal);
+      });
+    }
+
+    if (this.btnCloseGuideX) {
+      this.btnCloseGuideX.addEventListener('click', () => {
+        this.hideModal(this.guideModal);
+      });
+    }
+
+    if (this.guideTabs) {
+      this.guideTabs.addEventListener('click', (e) => {
+        const btn = e.target.closest('.guide-tab-btn');
+        if (btn && btn.dataset.property) {
+          sound.playClick();
+          this.switchGuideTab(btn.dataset.property);
+        }
+      });
+    }
   }
 
   showHomeView() {
@@ -267,7 +307,7 @@ class App {
 
     // Update Instructions
     this.instructionBox.innerHTML = `
-      <h3>${level.title} &mdash; <em>${level.subtitle}</em></h3>
+      <h3>${level.title}</h3>
       <p class="instruction-text">${level.instruction}</p>
     `;
 
@@ -277,6 +317,41 @@ class App {
     this.gameEngine.loadLevel(level);
 
     this.showGameView();
+  }
+
+  openGuide(propertyToSelect = 'justify-content') {
+    this.switchGuideTab(propertyToSelect);
+    this.showModal(this.guideModal);
+  }
+
+  switchGuideTab(property) {
+    if (!this.guideTabs || !this.guideContentPane) return;
+
+    const tabs = this.guideTabs.querySelectorAll('.guide-tab-btn');
+    tabs.forEach(tab => {
+      if (tab.dataset.property === property) {
+        tab.classList.add('active');
+      } else {
+        tab.classList.remove('active');
+      }
+    });
+
+    const guide = FLEXBOX_GUIDE[property];
+    if (!guide) return;
+
+    this.guideContentPane.innerHTML = `
+      <div class="guide-desc-banner">
+        ${guide.description}
+      </div>
+      <div class="guide-values-list">
+        ${guide.values.map(v => `
+          <div class="guide-val-item">
+            <span class="guide-val-code">${v.val}</span>
+            <span class="guide-val-explanation">${v.desc}</span>
+          </div>
+        `).join('')}
+      </div>
+    `;
   }
 
   _handleLevelSuccess(level) {

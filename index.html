@@ -87,11 +87,40 @@
           <span id="level-badge-number" class="level-counter-pill">Level 1 of 7</span>
           <span id="level-badge-title">Tokyo Sushi Rush</span>
         </div>
+
+        <button id="btn-open-guide" class="btn-help-pill" title="Flexbox Cheat Sheet & Guide" aria-label="Open Flexbox Guide">
+          <span class="help-exclamation">!</span>
+          <span class="help-label-text">Help &amp; Guide</span>
+        </button>
       </div>
 
       <!-- Instruction Box -->
       <div class="instruction-box" id="instruction-content">
         <!-- Injected dynamically -->
+      </div>
+
+      <!-- Inline Flexbox Reference Drawer (Zero Popups!) -->
+      <div id="inline-guide-drawer" class="inline-guide-drawer" style="display: none;">
+        <div class="guide-drawer-header">
+          <div class="guide-title-area">
+            <span class="guide-badge-icon">!</span>
+            <strong style="font-size: 1.05rem;">Flexbox Chef Reference</strong>
+          </div>
+          <button id="btn-close-guide" class="btn-drawer-close" aria-label="Close Guide">&times;</button>
+        </div>
+        
+        <!-- Property Tabs -->
+        <div class="guide-tabs" id="guide-tabs">
+          <button class="guide-tab-btn active" data-property="justify-content">justify-content</button>
+          <button class="guide-tab-btn" data-property="align-items">align-items</button>
+          <button class="guide-tab-btn" data-property="flex-direction">flex-direction</button>
+          <button class="guide-tab-btn" data-property="flex-wrap">flex-wrap</button>
+        </div>
+
+        <!-- Guide Content Pane -->
+        <div class="guide-content-pane" id="guide-content-pane">
+          <!-- Injected dynamically by app.js -->
+        </div>
       </div>
 
       <!-- Split Layout: Table on Left, Code Builder on Right -->
@@ -127,6 +156,11 @@
             </div>
           </div>
 
+          <!-- Inline Success Banner (No popup!) -->
+          <div id="level-success-banner" class="level-success-banner" style="display: none;">
+            <span>🎉 <strong>Delicious!</strong> All food is perfectly served! Click <strong>Next Level ➡️</strong> to continue.</span>
+          </div>
+
           <!-- Action Buttons -->
           <div class="action-toolbar">
             <button id="btn-serve-check" class="btn-primary">
@@ -150,26 +184,8 @@
   </div>
 
   <!-- ====================================================================
-       MODALS
+       GRAND TROPHY (FINAL CELEBRATION ONLY)
        ==================================================================== -->
-  <!-- Level Success Modal -->
-  <div class="modal-overlay" id="success-modal">
-    <div class="modal-card">
-      <div class="modal-icon">
-        <span style="font-size: 5rem;">🎉</span>
-      </div>
-      <h2 class="modal-title">Level Completed!</h2>
-      <p class="modal-desc" id="modal-success-desc">
-        Delicious! The food was served with culinary precision.
-      </p>
-      <div class="modal-actions">
-        <button id="btn-modal-menu" class="btn-secondary">Back to Menu</button>
-        <button id="btn-modal-next" class="btn-primary">Next Level ➡️</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Grand Trophy Celebration Modal -->
   <div class="modal-overlay" id="trophy-modal">
     <div class="modal-card">
       <div class="modal-icon">

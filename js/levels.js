@@ -9,18 +9,61 @@
    - 4 multi-property combinations (Levels 4, 5, 6, 7)
    ========================================================================== */
 
+export const FLEXBOX_GUIDE = {
+  "justify-content": {
+    name: "justify-content",
+    description: "Aligns flex items along the <strong>Main Axis</strong> (horizontal in <code>row</code>, vertical in <code>column</code>).",
+    values: [
+      { val: "flex-start", desc: "Items are packed at the start of the axis (left side in a row)." },
+      { val: "center", desc: "Items are centered along the axis." },
+      { val: "flex-end", desc: "Items are packed at the end of the axis (right side in a row)." },
+      { val: "space-between", desc: "Items are distributed evenly: first item at the start edge, last item at the end edge." },
+      { val: "space-around", desc: "Items are distributed with equal space around each item." }
+    ]
+  },
+  "align-items": {
+    name: "align-items",
+    description: "Aligns flex items along the <strong>Cross Axis</strong> (vertical in <code>row</code>, horizontal in <code>column</code>).",
+    values: [
+      { val: "flex-start", desc: "Items are aligned to the top edge of the cross-axis." },
+      { val: "center", desc: "Items are centered along the cross-axis." },
+      { val: "flex-end", desc: "Items are aligned to the bottom edge of the cross-axis." },
+      { val: "baseline", desc: "Items are aligned along their text baselines." }
+    ]
+  },
+  "flex-direction": {
+    name: "flex-direction",
+    description: "Defines the direction of the <strong>Main Axis</strong> and order of elements. <em>Note: changing to column swaps the main and cross axes!</em>",
+    values: [
+      { val: "row", desc: "Items flow horizontally from left to right (default)." },
+      { val: "row-reverse", desc: "Items flow horizontally in reverse from right to left." },
+      { val: "column", desc: "Items stack vertically from top to bottom (main axis is now vertical)." },
+      { val: "column-reverse", desc: "Items stack vertically in reverse from bottom to top." }
+    ]
+  },
+  "flex-wrap": {
+    name: "flex-wrap",
+    description: "Controls whether flex items are forced into a single line or can wrap onto multiple lines.",
+    values: [
+      { val: "nowrap", desc: "All items are squeezed onto a single line (default)." },
+      { val: "wrap", desc: "Items break onto multiple lines from top to bottom when they overflow." },
+      { val: "wrap-reverse", desc: "Items break onto multiple lines in reverse direction." }
+    ]
+  }
+};
+
 export const LEVELS = [
   {
     id: 1,
     title: "Tokyo Sushi Rush",
-    subtitle: "Main Axis Alignment with justify-content",
+    subtitle: "Tokyo Restaurant Counter",
     characterImg: "assets/characters/japanese.png",
     characterName: "Japanese Guest",
     foodImg: "assets/foods/sushi.png",
     foodName: "Salmon Sushi Roll",
     itemCount: 2,
     hasOrderLabels: false,
-    instruction: "Welcome to Tokyo! Two hungry guests are seated at the far right end of the dining counter. Use <code>justify-content</code> to slide their sushi plates horizontally to the end of the line.",
+    instruction: "Welcome to Tokyo! Two hungry Japanese guests are seated at the far right end of the dining counter. Slide the sushi rolls onto their plates!",
     slots: [
       { property: "justify-content", placeholder: "choose value" }
     ],
@@ -43,14 +86,14 @@ export const LEVELS = [
   {
     id: 2,
     title: "Napoli Pizza Special",
-    subtitle: "Cross Axis Alignment with align-items",
+    subtitle: "Pizzeria Napoletana",
     characterImg: "assets/characters/italian.png",
     characterName: "Italian Chef",
     foodImg: "assets/foods/pizza.png",
     foodName: "Hot Pepperoni Pizza",
     itemCount: 2,
     hasOrderLabels: false,
-    instruction: "Mamma Mia! The pizza slices are currently stuck at the top of the table, but the Italian chefs are waiting in the vertical center. Use <code>align-items</code> to center the pizzas vertically along the cross-axis.",
+    instruction: "Mamma Mia! The Italian chefs are seated along the vertical center of the table. Slide the pizza slices down to their plates!",
     slots: [
       { property: "align-items", placeholder: "choose value" }
     ],
@@ -73,14 +116,14 @@ export const LEVELS = [
   {
     id: 3,
     title: "Taco Fiesta Reversal",
-    subtitle: "Direction Inversion with flex-direction",
+    subtitle: "Mexican Cantina",
     characterImg: "assets/characters/mexican.png",
     characterName: "Mexican Amigo",
     foodImg: "assets/foods/taco.png",
     foodName: "Crispy Beef Taco",
     itemCount: 3,
-    hasOrderLabels: true, // Shows numbers 1, 2, 3 to make reversal crystal clear
-    instruction: "¡Ay, caramba! The guests sat down in reverse order (Amigo #3 on the left, #1 on the right)! Use <code>flex-direction</code> to reverse the horizontal row so each numbered taco reaches its matching amigo.",
+    hasOrderLabels: true,
+    instruction: "Notice the guest order numbers: Amigo #3 is seated on the left and Amigo #1 is on the right! Deliver each numbered taco to its matching amigo.",
     slots: [
       { property: "flex-direction", placeholder: "choose value" }
     ],
@@ -103,17 +146,17 @@ export const LEVELS = [
   {
     id: 4,
     title: "Tel Aviv Rooftop Refreshment",
-    subtitle: "Combination 1: Spacing & Cross-Axis Centering",
+    subtitle: "Rooftop Lounge",
     characterImg: "assets/characters/israeli.png",
     characterName: "Israeli Guest",
     foodImg: "assets/foods/drink.png",
     foodName: "Iced Lemon Drink",
     itemCount: 3,
     hasOrderLabels: false,
-    instruction: "It's a hot sunny day on a Tel Aviv rooftop! Three guests are seated spaced evenly apart across the width of the table, centered vertically. Use both <code>justify-content</code> and <code>align-items</code> to deliver their cold drinks.",
+    instruction: "A hot summer day in Tel Aviv! Three guests are sitting in the vertical center, spread evenly from one edge of the table to the other. Serve their cold drinks!",
     slots: [
-      { property: "justify-content", placeholder: "horizontal spacing" },
-      { property: "align-items", placeholder: "vertical alignment" }
+      { property: "justify-content", placeholder: "main axis spacing" },
+      { property: "align-items", placeholder: "cross axis position" }
     ],
     winningSolution: {
       "justify-content": "space-between",
@@ -138,17 +181,17 @@ export const LEVELS = [
   {
     id: 5,
     title: "Kyoto Vertical Bento Express",
-    subtitle: "Combination 2: Vertical Column & Centering",
+    subtitle: "Kyoto Tea House",
     characterImg: "assets/characters/japanese.png",
     characterName: "Japanese Guest",
     foodImg: "assets/foods/sushi.png",
     foodName: "Salmon Sushi Roll",
     itemCount: 3,
     hasOrderLabels: false,
-    instruction: "In a narrow traditional Japanese dining room, guests are seated vertically from top to bottom, perfectly centered in the middle of the table! Change the main axis to vertical with <code>flex-direction</code>, and center them with <code>align-items</code>.",
+    instruction: "In a cozy traditional dining room, the guests are seated in a vertical line from top to bottom, right in the middle of the table. Serve their sushi!",
     slots: [
       { property: "flex-direction", placeholder: "axis direction" },
-      { property: "align-items", placeholder: "cross-axis alignment" }
+      { property: "align-items", placeholder: "cross axis alignment" }
     ],
     winningSolution: {
       "flex-direction": "column",
@@ -171,18 +214,18 @@ export const LEVELS = [
   },
   {
     id: 6,
-    title: "Guadalajara Taco Party (Flex Wrap!)",
-    subtitle: "Combination 3: Wrapping Lines onto Multiple Rows",
+    title: "Guadalajara Taco Party",
+    subtitle: "Hacienda Banquet Hall",
     characterImg: "assets/characters/mexican.png",
     characterName: "Mexican Amigo",
     foodImg: "assets/foods/taco.png",
     foodName: "Crispy Beef Taco",
     itemCount: 6,
     hasOrderLabels: false,
-    instruction: "Big Fiesta celebration! Six amigos are dining together. A single line cannot fit all six plates! Use <code>flex-wrap</code> to allow dishes to wrap onto multiple rows, and space them generously with <code>justify-content: space-around</code>.",
+    instruction: "Fiesta time! Six hungry amigos are seated across two rows at the table. Serve all six tacos so everyone gets fed!",
     slots: [
-      { property: "flex-wrap", placeholder: "line wrapping" },
-      { property: "justify-content", placeholder: "horizontal distribution" }
+      { property: "flex-wrap", placeholder: "multi-line wrapping" },
+      { property: "justify-content", placeholder: "spacing distribution" }
     ],
     winningSolution: {
       "flex-wrap": "wrap",
@@ -208,8 +251,7 @@ export const LEVELS = [
   {
     id: 7,
     title: "The Grand International Banquet",
-    subtitle: "Combination 4: Master Chef 3-Property Triad",
-    // Special multi-character banquet level!
+    subtitle: "World Summit VIP Table",
     characters: [
       { img: "assets/characters/japanese.png", name: "Japanese Guest", food: "assets/foods/sushi.png", foodName: "Sushi", order: 1 },
       { img: "assets/characters/italian.png", name: "Italian Chef", food: "assets/foods/pizza.png", foodName: "Pizza", order: 2 },
@@ -217,11 +259,11 @@ export const LEVELS = [
     ],
     itemCount: 3,
     hasOrderLabels: true,
-    instruction: "The ultimate Master Chef test! Three VIP international guests are seated vertically from bottom-to-top in reverse order (#3 at top, #1 at bottom), spaced apart at the far right edge of the table. Combine <code>flex-direction</code>, <code>justify-content</code>, and <code>align-items</code>!",
+    instruction: "The Grand Finale! Three international guests are seated in reverse vertical order (#3 at top, #1 at bottom) along the right edge of the table. Deliver the feast to their plates!",
     slots: [
       { property: "flex-direction", placeholder: "vertical reversed" },
       { property: "justify-content", placeholder: "space distribution" },
-      { property: "align-items", placeholder: "cross-axis alignment" }
+      { property: "align-items", placeholder: "cross axis position" }
     ],
     winningSolution: {
       "flex-direction": "column-reverse",

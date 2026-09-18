@@ -73,39 +73,65 @@ export class CodeBuilder {
     if (!this.chipsPool) return;
 
     this.chipsPool.innerHTML = '';
-    level.availableChips.forEach((chip, index) => {
-      const chipEl = document.createElement('div');
-      chipEl.className = 'code-chip';
-      chipEl.draggable = true;
-      chipEl.dataset.property = chip.property;
-      chipEl.dataset.value = chip.value;
-      chipEl.dataset.index = index;
-      chipEl.innerHTML = `
-        <span class="chip-drag-handle">⋮⋮</span>
-        <span>${chip.value}</span>
-      `;
 
-      // Drag start
-      chipEl.addEventListener('dragstart', (e) => {
-        e.dataTransfer.setData('text/plain', JSON.stringify({
-          property: chip.property,
-          value: chip.value
-        }));
-        e.dataTransfer.effectAllowed = 'copy';
-        chipEl.classList.add('dragging');
+    // Group available chips by property
+    const grouped = {};
+    level.slots.forEach(s => {
+      grouped[s.property] = [];
+    });
+    level.availableChips.forEach(chip => {
+      if (!grouped[chip.property]) grouped[chip.property] = [];
+      grouped[chip.property].push(chip);
+    });
+
+    Object.entries(grouped).forEach(([property, chips]) => {
+      const row = document.createElement('div');
+      row.className = 'chips-group-row';
+      
+      const label = document.createElement('div');
+      label.className = 'chips-group-label';
+      label.innerHTML = `<span class="property-tag">${property}</span>:`;
+      row.appendChild(label);
+
+      const itemsContainer = document.createElement('div');
+      itemsContainer.className = 'chips-group-items';
+
+      chips.forEach((chip) => {
+        const chipEl = document.createElement('div');
+        chipEl.className = 'code-chip';
+        chipEl.draggable = true;
+        chipEl.dataset.property = chip.property;
+        chipEl.dataset.value = chip.value;
+        chipEl.innerHTML = `
+          <span class="chip-drag-handle">⋮⋮</span>
+          <span>${chip.value}</span>
+        `;
+
+        // Drag start
+        chipEl.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text/plain', JSON.stringify({
+            property: chip.property,
+            value: chip.value
+          }));
+          e.dataTransfer.effectAllowed = 'copy';
+          chipEl.classList.add('dragging');
+        });
+
+        chipEl.addEventListener('dragend', () => {
+          chipEl.classList.remove('dragging');
+        });
+
+        // Click / Tap fallback for mobile & quick selection
+        chipEl.addEventListener('click', () => {
+          this.fillSlot(chip.property, chip.value);
+          sound.playDrop();
+        });
+
+        itemsContainer.appendChild(chipEl);
       });
 
-      chipEl.addEventListener('dragend', () => {
-        chipEl.classList.remove('dragging');
-      });
-
-      // Click / Tap fallback for mobile & quick desktop selection
-      chipEl.addEventListener('click', () => {
-        this.fillSlot(chip.property, chip.value);
-        sound.playDrop();
-      });
-
-      this.chipsPool.appendChild(chipEl);
+      row.appendChild(itemsContainer);
+      this.chipsPool.appendChild(row);
     });
   }
 
