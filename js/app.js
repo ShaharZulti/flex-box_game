@@ -63,15 +63,14 @@ class App {
     this.aboutModal = document.getElementById('about-modal');
     this.btnCloseAbout = document.getElementById('btn-close-about');
     this.btnAboutCloseBtn = document.getElementById('btn-about-close-btn');
-    this.aboutUsSection = document.getElementById('about-us-section');
   }
 
   init() {
-    this._initPreferences();
-    this._initEngineAndBuilder();
-    this._bindEvents();
-    this.renderHomeDashboard();
-    this.showHomeView();
+    try { this._initPreferences(); } catch (e) { console.error('Preferences init error:', e); }
+    try { this._initEngineAndBuilder(); } catch (e) { console.error('Engine init error:', e); }
+    try { this._bindEvents(); } catch (e) { console.error('Events binding error:', e); }
+    try { this.renderHomeDashboard(); } catch (e) { console.error('Dashboard render error:', e); }
+    try { this.showHomeView(); } catch (e) { console.error('Show view error:', e); }
   }
 
   _initPreferences() {
@@ -484,8 +483,14 @@ class App {
   }
 }
 
-// Instantiate and initialize on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', () => {
+// Safe instantiation: works if DOM is loading or already interactive/complete
+function bootstrapApp() {
   const app = new App();
   app.init();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootstrapApp);
+} else {
+  bootstrapApp();
+}

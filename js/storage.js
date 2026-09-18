@@ -13,7 +13,8 @@ export const storage = {
   getCompletedLevels() {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.COMPLETED_LEVELS);
-      return data ? JSON.parse(data) : [];
+      const parsed = data ? JSON.parse(data) : [];
+      return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
       console.warn('LocalStorage not available:', e);
       return [];
