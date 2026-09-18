@@ -114,35 +114,7 @@
 }
 
 /* Dark Mode: Cozy Candlelit Evening Kitchen */
-[data-theme="dark"] {
-  --bg-primary: #26160c;
-  --bg-secondary: #2a1b12;
-  --bg-card: #2a1b12;
-  --border-color: #a16207;
-  --chip-bg: #382417;
-  --chip-text: #fff4e0;
-  --chip-border: #7c4422;
-  --chip-hover-bg: #4a2e1d;
 
-  --counter-wood-top: #3a190b;
-  --counter-wood-mid: #271005;
-  --counter-wood-dark: #190902;
-  --counter-wood-shadow: #0b0300;
-
-  --board-bg: #2d2420;
-  --board-bg-gradient: linear-gradient(180deg, #382c26 0%, #241c17 100%);
-  --board-border: #7c4422;
-  --board-outline: #4a2412;
-
-  --board-locked-bg: #1a1e28;
-  --board-locked-border: #382c24;
-
-  --text-main: #fff4e0;
-  --text-muted: #d4b8a4;
-
-  --nav-wood-bg: linear-gradient(180deg, #2b1206 0%, #170702 100%);
-  --nav-wood-border: #0d0401;
-}
 
 /* Base Reset */
 *, *::before, *::after {

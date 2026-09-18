@@ -24,7 +24,6 @@ class App {
     
     // Navbar Elements
     this.navBrand = document.getElementById('nav-brand');
-    this.themeToggleBtn = document.getElementById('theme-toggle-btn');
     this.soundToggleBtn = document.getElementById('sound-toggle-btn');
     this.btnBackHome = document.getElementById('btn-back-home');
     this.btnResetAllProgress = document.getElementById('btn-reset-all-progress');
@@ -76,11 +75,6 @@ class App {
   }
 
   _initPreferences() {
-    // Theme setup
-    const savedTheme = storage.getTheme();
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    this.themeToggleBtn.textContent = savedTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode ⚙';
-
     // Sound setup
     const isMuted = storage.isSoundMuted();
     sound.setMuted(isMuted);
@@ -116,16 +110,6 @@ class App {
     this.btnBackHome.addEventListener('click', () => {
       sound.playClick();
       this.showHomeView();
-    });
-
-    // Theme toggle
-    this.themeToggleBtn.addEventListener('click', () => {
-      sound.playClick();
-      const current = document.documentElement.getAttribute('data-theme');
-      const next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      storage.setTheme(next);
-      this.themeToggleBtn.textContent = next === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode ⚙';
     });
 
     // Sound toggle

@@ -116,11 +116,7 @@
   box-shadow: 0 0 12px rgba(234, 88, 12, 0.4) !important;
 }
 
-[data-theme="dark"] .drop-slot.filled {
-  background: #382417 !important;
-  color: #fef08a !important;
-  border-color: #facc15 !important;
-}
+
 
 .drop-slot.filled:hover {
   filter: brightness(1.1);
@@ -147,11 +143,7 @@
   color: #2b1810;
 }
 
-[data-theme="dark"] .chips-tray-section {
-  background: #2a1b12;
-  border-color: #a16207;
-  color: #fff4e0;
-}
+
 
 .chips-tray-header {
   font-family: var(--font-title);
@@ -165,9 +157,7 @@
   letter-spacing: 0.5px;
 }
 
-[data-theme="dark"] .chips-tray-header {
-  color: #fef08a;
-}
+
 
 .chips-tray-hint {
   font-family: var(--font-main);
@@ -191,9 +181,7 @@
   border-bottom: 1.5px dashed #fed7aa;
 }
 
-[data-theme="dark"] .chips-group-row {
-  border-bottom-color: #4d3a2e;
-}
+
 
 .chips-group-row:last-child {
   border-bottom: none;
@@ -210,9 +198,7 @@
   font-weight: 700;
 }
 
-[data-theme="dark"] .chips-group-label {
-  color: #fed7aa;
-}
+
 
 .chips-group-label .property-tag {
   color: #0284c7;
@@ -222,10 +208,7 @@
   border-radius: 6px;
 }
 
-[data-theme="dark"] .chips-group-label .property-tag {
-  color: #38bdf8;
-  background: rgba(56, 189, 248, 0.15);
-}
+
 
 .chips-group-items {
   display: flex;
@@ -262,19 +245,9 @@
   border-color: #ea580c !important;
 }
 
-[data-theme="dark"] .code-chip {
-  background: #382417 !important;
-  color: #fff4e0 !important;
-  border-color: #7c4422 !important;
-  box-shadow: 0 4px 0 #ea580c !important;
-}
 
-[data-theme="dark"] .code-chip:hover {
-  background: #4a2e1d !important;
-  color: #fef08a !important;
-  border-color: #f97316 !important;
-  box-shadow: 0 6px 0 #ea580c !important;
-}
+
+
 
 .code-chip:active {
   cursor: grabbing;

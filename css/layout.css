@@ -973,12 +973,7 @@
   color: #2b1810;
 }
 
-[data-theme="dark"] .about-modal-card {
-  background-color: #26160c !important;
-  background-image: none !important;
-  border-color: #a16207 !important;
-  color: #fff4e0;
-}
+
 
 .guide-modal-header {
   display: flex;
@@ -1035,9 +1030,7 @@
   color: #4a2412;
 }
 
-[data-theme="dark"] .about-modal-desc {
-  color: #fed7aa;
-}
+
 
 .creators-grid {
   display: flex;
@@ -1079,9 +1072,7 @@
   letter-spacing: 0.5px;
 }
 
-[data-theme="dark"] .creator-name {
-  color: #fff4e0;
-}
+
 
 .guide-tabs {
   display: flex;

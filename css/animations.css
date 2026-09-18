@@ -145,11 +145,7 @@
   color: #991b1b;
 }
 
-[data-theme="dark"] .toast-feedback.error {
-  background: #450a0a;
-  color: #fca5a5;
-  border-color: #7f1d1d;
-}
+
 
 .toast-feedback.success {
   border-color: var(--accent-success);
@@ -157,8 +153,4 @@
   color: #065f46;
 }
 
-[data-theme="dark"] .toast-feedback.success {
-  background: #064e3b;
-  color: #6ee7b7;
-  border-color: #047857;
-}
+
