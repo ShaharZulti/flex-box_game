@@ -1,16 +1,17 @@
 /* ==========================================================================
    Code Builder & Drag-and-Drop CSS Editor Styles
+   "World Bistro: Flexbox Edition" - Casual Cartoon Restaurant Aesthetic
    ========================================================================== */
 
 .code-editor-container {
   background: var(--code-bg);
   color: var(--code-text);
-  border-radius: var(--radius-md);
-  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  padding: 18px 22px;
   font-family: 'Fira Code', 'Consolas', 'Courier New', monospace;
   font-size: 0.95rem;
-  box-shadow: var(--shadow-md);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 0 #241006, 0 16px 30px rgba(0, 0, 0, 0.45);
+  border: 3px solid #854d0e;
   position: relative;
 }
 
@@ -19,8 +20,8 @@
   align-items: center;
   gap: 8px;
   margin-bottom: 14px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .window-dots {
@@ -29,22 +30,24 @@
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
 }
-.dot.red { background: #ff5f56; }
-.dot.yellow { background: #ffbd2e; }
-.dot.green { background: #27c93f; }
+.dot.red { background: #ef4444; box-shadow: 0 0 8px rgba(239, 68, 68, 0.6); }
+.dot.yellow { background: #facc15; box-shadow: 0 0 8px rgba(250, 204, 21, 0.6); }
+.dot.green { background: #22c55e; box-shadow: 0 0 8px rgba(34, 197, 94, 0.6); }
 
 .window-filename {
   color: var(--code-punctuation);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
   margin-left: 8px;
+  letter-spacing: 0.5px;
 }
 
 .code-line {
-  line-height: 2.2;
+  line-height: 2.3;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -56,12 +59,13 @@
 }
 
 .code-selector {
-  color: var(--code-selector);
-  font-weight: bold;
+  color: #f472b6;
+  font-weight: 800;
 }
 
 .code-property {
-  color: var(--code-property);
+  color: #38bdf8;
+  font-weight: 700;
 }
 
 .code-punctuation {
@@ -69,7 +73,8 @@
 }
 
 .code-val-fixed {
-  color: #a6e3a1; /* green */
+  color: #4ade80;
+  font-weight: 800;
 }
 
 /* --------------------------------------------------------------------------
@@ -79,71 +84,96 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 130px;
-  height: 32px;
-  padding: 2px 10px;
-  background: var(--slot-empty-bg);
-  border: 2px dashed var(--slot-empty-border);
-  border-radius: var(--radius-sm);
-  color: var(--code-property);
-  font-size: 0.85rem;
+  min-width: 140px;
+  height: 36px;
+  padding: 4px 14px;
+  background: rgba(254, 215, 170, 0.12);
+  border: 2px dashed #f97316;
+  border-radius: 10px;
+  color: #fed7aa;
+  font-size: 0.9rem;
+  font-weight: 700;
   vertical-align: middle;
   transition: all 0.2s ease;
   user-select: none;
 }
 
 .drop-slot.drag-over {
-  background: rgba(137, 180, 250, 0.35);
-  border-color: #89b4fa;
-  transform: scale(1.04);
+  background: rgba(234, 88, 12, 0.25);
+  border-color: #ea580c;
+  transform: scale(1.05);
+  box-shadow: 0 0 16px rgba(234, 88, 12, 0.5);
 }
 
+/* Filled Drop Slot (Option placed in code) */
 .drop-slot.filled {
-  border-style: solid;
-  border-color: var(--accent-success);
-  background: rgba(16, 185, 129, 0.2);
-  color: #a6e3a1;
-  font-weight: 600;
+  border-style: solid !important;
+  border-color: #ea580c !important;
+  background: #ffffff !important;
+  color: #ea580c !important;
+  font-weight: 800;
   cursor: pointer;
+  box-shadow: 0 0 12px rgba(234, 88, 12, 0.4) !important;
+}
+
+[data-theme="dark"] .drop-slot.filled {
+  background: #382417 !important;
+  color: #fef08a !important;
+  border-color: #facc15 !important;
 }
 
 .drop-slot.filled:hover {
-  filter: brightness(1.15);
+  filter: brightness(1.1);
+  transform: scale(1.02);
 }
 
 .drop-slot .slot-placeholder {
-  color: rgba(205, 214, 244, 0.45);
+  color: rgba(254, 215, 170, 0.6);
   font-style: italic;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   pointer-events: none;
 }
 
 /* --------------------------------------------------------------------------
-   Available Code Chips Tray (Bottom)
+   Available Code Chips Tray (Cutting Board Panel with Solid Background)
    -------------------------------------------------------------------------- */
 .chips-tray-section {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, #fffbf2 0%, #f7ecd5 100%);
+  border: 3.5px solid #854d0e;
+  border-radius: 20px;
   padding: 16px 20px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 8px 0 #3b1c09, 0 14px 24px rgba(0, 0, 0, 0.35);
+  margin-top: 18px;
+  color: #2b1810;
+}
+
+[data-theme="dark"] .chips-tray-section {
+  background: #2a1b12;
+  border-color: #a16207;
+  color: #fff4e0;
 }
 
 .chips-tray-header {
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--text-muted);
+  font-family: var(--font-title);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #3b1c09;
   margin-bottom: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  letter-spacing: 0.5px;
+}
+
+[data-theme="dark"] .chips-tray-header {
+  color: #fef08a;
 }
 
 .chips-tray-hint {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  font-weight: normal;
+  font-family: var(--font-main);
+  font-size: 0.82rem;
+  color: #ea580c;
+  font-weight: 700;
   text-transform: none;
 }
 
@@ -156,9 +186,13 @@
 .chips-group-row {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   padding-bottom: 10px;
-  border-bottom: 1px dashed var(--border-color);
+  border-bottom: 1.5px dashed #fed7aa;
+}
+
+[data-theme="dark"] .chips-group-row {
+  border-bottom-color: #4d3a2e;
 }
 
 .chips-group-row:last-child {
@@ -167,65 +201,97 @@
 }
 
 .chips-group-label {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-family: 'Fira Code', 'Consolas', monospace;
-  color: var(--text-muted);
+  color: #785848;
   display: flex;
   align-items: center;
-  gap: 4px;
-}
-
-.chips-group-label .property-tag {
-  color: var(--accent-secondary);
+  gap: 6px;
   font-weight: 700;
 }
 
+[data-theme="dark"] .chips-group-label {
+  color: #fed7aa;
+}
+
+.chips-group-label .property-tag {
+  color: #0284c7;
+  font-weight: 800;
+  background: rgba(2, 132, 199, 0.12);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
 [data-theme="dark"] .chips-group-label .property-tag {
-  color: #89b4fa;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
 }
 
 .chips-group-items {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
+/* --------------------------------------------------------------------------
+   Options Chips with Solid Opaque Background & 3D Tactile Buttons
+   -------------------------------------------------------------------------- */
 .code-chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: var(--chip-bg);
-  color: var(--chip-text);
-  border: 1px solid var(--chip-border);
-  padding: 8px 14px;
-  border-radius: var(--radius-sm);
+  gap: 8px;
+  background: #ffffff !important;
+  color: #2b1810 !important;
+  border: 2.5px solid #fed7aa !important;
+  padding: 7px 16px;
+  border-radius: 12px;
   font-family: 'Fira Code', 'Consolas', monospace;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.92rem;
+  font-weight: 700;
   cursor: grab;
-  transition: all 0.2s ease;
+  transition: all 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
   user-select: none;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 0 #ea580c, 0 4px 10px rgba(0, 0, 0, 0.15) !important;
 }
 
 .code-chip:hover {
-  background: var(--chip-hover-bg);
+  background: #fff7ed !important;
+  color: #ea580c !important;
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--accent-secondary);
+  box-shadow: 0 6px 0 #c2410c, 0 8px 16px rgba(234, 88, 12, 0.25) !important;
+  border-color: #ea580c !important;
+}
+
+[data-theme="dark"] .code-chip {
+  background: #382417 !important;
+  color: #fff4e0 !important;
+  border-color: #7c4422 !important;
+  box-shadow: 0 4px 0 #ea580c !important;
+}
+
+[data-theme="dark"] .code-chip:hover {
+  background: #4a2e1d !important;
+  color: #fef08a !important;
+  border-color: #f97316 !important;
+  box-shadow: 0 6px 0 #ea580c !important;
 }
 
 .code-chip:active {
   cursor: grabbing;
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #ea580c !important;
 }
 
 .code-chip.in-use {
-  opacity: 0.4;
+  opacity: 0.35;
   pointer-events: none;
-  border-style: dashed;
+  border-style: dashed !important;
+  box-shadow: none !important;
+  transform: none;
 }
 
 .code-chip .chip-drag-handle {
-  color: var(--text-muted);
-  font-size: 0.8rem;
+  color: #ea580c;
+  font-size: 0.85rem;
+  opacity: 0.8;
 }

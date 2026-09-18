@@ -26,8 +26,8 @@
       </div>
 
       <div class="nav-actions">
-        <button id="theme-toggle-btn" class="icon-btn" aria-label="Toggle Dark or Light Mode">
-          🌙 Dark
+        <button id="btn-about-nav" class="icon-btn btn-nav-creators" aria-label="About the Creators">
+          👥 About Us
         </button>
         <button id="sound-toggle-btn" class="icon-btn" aria-label="Toggle Sound Effects">
           🔊 Sound
@@ -42,32 +42,75 @@
          VIEW 1: HOME SCREEN / LEVEL SELECT DASHBOARD
          ==================================================================== -->
     <main id="home-view" class="view-section active">
-      <section class="hero-banner">
-        <h1 class="hero-title">World Bistro: Feed the Hungry Guests!</h1>
-        <p class="hero-subtitle">
-          Hungry diners from around the globe are waiting at your restaurant tables! 
-          Use your <strong>CSS Flexbox</strong> skills to align and slide delicious dishes directly onto their empty plates.
-        </p>
+            <section class="hero-banner">
+        <div class="logo-mascot-container">
+          <div class="logo-text-group">
+            <h1 class="game-logo-title">
+              <span class="logo-word-world">World</span>
+              <span class="logo-word-bistro">Bistro</span>
+            </h1>
+            <div class="logo-edition-ribbon">
+              <span class="ribbon-text">FLEXBOX EDITION!</span>
+            </div>
+          </div>
+          <div class="chef-mascot-wrap">
+            <img src="assets/characters/chef.png" alt="Head Chef Mascot" class="chef-mascot-img">
+          </div>
+        </div>
+
+        <!-- Decorative Chef's Parchment Scroll -->
+        <div class="parchment-scroll-container">
+          <div class="scroll-roller scroll-roller-left"></div>
+          <div class="scroll-body">
+            <h2 class="scroll-title">Feed the Hungry Guests!</h2>
+            <p class="scroll-text">
+              Hungry diners from around the globe are waiting at your restaurant tables! Use your CSS Flexbox skills to align and slide delicious dishes directly onto their plates.
+            </p>
+          </div>
+          <div class="scroll-roller scroll-roller-right"></div>
+        </div>
       </section>
 
-      <!-- Progress Dashboard -->
+      <!-- Culinary Progress Dashboard -->
       <section class="progress-dashboard">
-        <div class="progress-header">
-          <span>Culinary Progress</span>
-          <span id="progress-text">0 of 7 Levels Mastered (0%)</span>
-        </div>
-        <div class="progress-bar-track">
-          <div id="progress-fill" class="progress-bar-fill"></div>
+        <div class="culinary-progress-plaque">
+          <div class="ingredient-cluster ingredient-cluster-left">
+            <span class="ing-item" title="Onion">🧅</span>
+            <span class="ing-item" title="Garlic">🧄</span>
+            <span class="ing-item" title="Mushroom">🍄</span>
+          </div>
+
+          <div class="progress-bar-center">
+            <div class="progress-label" id="progress-text">
+              Culinary Progress: 0 of 7 Levels Mastered (0%)
+            </div>
+            <div class="progress-bar-track">
+              <div id="progress-fill" class="progress-bar-fill"></div>
+            </div>
+          </div>
+
+          <div class="ingredient-cluster ingredient-cluster-right">
+            <span class="ing-item" title="Carrot">🥕</span>
+            <span class="ing-item" title="Radish">Radish</span>
+            <span class="ing-item" title="Tomato">🍅</span>
+          </div>
         </div>
       </section>
 
-      <!-- Levels Grid -->
-      <section class="levels-grid" id="levels-grid">
-        <!-- Rendered dynamically by app.js -->
-      </section>
+      <!-- Table Countertop with Props & Levels Grid -->
+      <div class="countertop-table-area">
+        <div class="table-prop table-prop-spoons" aria-hidden="true">🥄</div>
+        <div class="table-prop table-prop-garlic" aria-hidden="true">🧄</div>
+        <div class="table-prop table-prop-tomato-left" aria-hidden="true">🍅</div>
+        <div class="table-prop table-prop-tomato-right" aria-hidden="true">🍅</div>
 
-      <div style="text-align: center; margin-top: 10px;">
-        <button id="btn-reset-all-progress" class="icon-btn" style="color: var(--text-muted); font-size: 0.85rem;">
+        <section class="levels-grid" id="levels-grid">
+          <!-- Rendered dynamically by app.js -->
+        </section>
+      </div>
+
+      <div style="text-align: center; margin-top: 10px; margin-bottom: 8px;">
+        <button id="btn-reset-all-progress" class="icon-btn" style="color: var(--text-muted); font-size: 0.8rem; padding: 4px 12px;">
           ⚠️ Reset All Saved Progress
         </button>
       </div>
@@ -157,8 +200,53 @@
 
     <!-- Footer -->
     <footer class="site-footer">
-      <p>World Bistro Flexbox Game &bull; College Web Development Assignment 2 &bull; Built with Pure HTML5, CSS3 &amp; Vanilla JavaScript</p>
+      <p>World Bistro Flexbox Game &bull; Created with ❤️ by <strong>Rotem Segal</strong> &amp; <strong>Shahar Zulti</strong></p>
     </footer>
+  </div>
+
+  <!-- ====================================================================
+       ABOUT THE CREATORS MODAL
+       ==================================================================== -->
+  <div class="modal-overlay" id="about-modal" role="dialog" aria-modal="true" aria-labelledby="about-modal-title">
+    <div class="modal-card about-modal-card">
+      <div class="guide-modal-header">
+        <div class="guide-title-area">
+          <span class="guide-badge-icon">👨‍🍳</span>
+          <h2 id="about-modal-title" style="font-size: 1.35rem; font-weight: 800; margin: 0;">About Us</h2>
+        </div>
+        <button id="btn-close-about" class="btn-drawer-close" aria-label="Close Modal">&times;</button>
+      </div>
+
+      <div class="about-modal-body">
+        <p class="about-modal-desc">
+          Hi! We are Rotem Segal and Shahar Zulti, 2nd-year Computer Science students! We designed and engineered World Bistro to turn learning CSS Flexbox into an exciting, tactile arcade challenge.
+        </p>
+
+        <div class="creators-grid modal-creators-grid">
+          <!-- Rotem Segal (guy) -->
+          <div class="creator-profile-card">
+            <div class="creator-avatar-wrap">
+              <img src="assets/creators/rotem.png" alt="Rotem Segal" class="creator-avatar-img">
+            </div>
+            <h3 class="creator-name">Rotem Segal</h3>
+          </div>
+
+          <!-- Shahar Zulti (girl) -->
+          <div class="creator-profile-card">
+            <div class="creator-avatar-wrap">
+              <img src="assets/creators/shahar.png" alt="Shahar Zulti" class="creator-avatar-img">
+            </div>
+            <h3 class="creator-name">Shahar Zulti</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top: 16px;">
+        <button id="btn-about-close-btn" class="btn-primary" style="width: 100%;">
+          Awesome, Let's Play! 🎮
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- ====================================================================

@@ -1,80 +1,147 @@
 /* ==========================================================================
    Base Styles, CSS Variables, Color Tokens & Typography
-   "World Bistro: Feed the Hungry Guests!"
+   "World Bistro: Flexbox Edition" - Casual Cartoon Restaurant Aesthetic
    ========================================================================== */
 
-:root {
-  /* Light Mode (Bright Bistro) */
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
-  --bg-card: #ffffff;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --border-color: #e2e8f0;
-  
-  /* Brand & Vibrant Accents */
-  --accent-primary: #ff5722;      /* Warm Bistro Orange */
-  --accent-primary-hover: #e64a19;
-  --accent-secondary: #3b82f6;    /* Friendly Chef Blue */
-  --accent-secondary-hover: #2563eb;
-  --accent-success: #10b981;      /* Emerald Victory */
-  --accent-success-hover: #059669;
-  --accent-warning: #f59e0b;
-  --accent-danger: #ef4444;       /* Error Red */
-  
-  /* Dining Table & Board Colors */
-  --table-border: #8d5b4c;
-  --table-wood-1: #e9c49a;
-  --table-wood-2: #dfb282;
-  --cloth-pattern: rgba(255, 255, 255, 0.45);
-  --plate-bg: #ffffff;
-  --plate-border: #e2e8f0;
-  --plate-shadow: rgba(0, 0, 0, 0.12);
-  
-  /* Code Editor Colors (Light) */
-  --code-bg: #1e1e2e;
-  --code-text: #cdd6f4;
-  --code-selector: #f38ba8;
-  --code-property: #89b4fa;
-  --code-punctuation: #a6adc8;
-  --slot-empty-bg: rgba(137, 180, 250, 0.15);
-  --slot-empty-border: #89b4fa;
-  --chip-bg: #f1f5f9;
-  --chip-text: #0f172a;
-  --chip-border: #cbd5e1;
-  --chip-hover-bg: #e2e8f0;
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800;900&family=Lilita+One&family=Fira+Code:wght@500;600;700&display=swap');
 
-  /* Shadows & Radius */
+:root {
+  /* General Fallbacks */
+  --bg-primary: #fffbf2;
+  --bg-secondary: #fffbf2;
+  --bg-card: #fffbf2;
+  --border-color: #854d0e;
+  --chip-bg: #ffffff;
+  --chip-text: #2b1810;
+  --chip-border: #fed7aa;
+  --chip-hover-bg: #fff7ed;
+
+  /* Warm Cartoon Restaurant Kitchen Palette */
+  --font-main: 'Fredoka', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-title: 'Lilita One', 'Fredoka', cursive, sans-serif;
+  --font-code: 'Fira Code', monospace;
+
+  /* Kitchen Wood & Countertop Surfaces */
+  --counter-wood-top: #7c4322;
+  --counter-wood-mid: #5e3016;
+  --counter-wood-dark: #3e1e0d;
+  --counter-wood-shadow: #241006;
+  --counter-wood-grain: rgba(0, 0, 0, 0.08);
+
+  /* Cutting Board Plaque Cards */
+  --board-bg: #fffbf2;
+  --board-bg-gradient: linear-gradient(180deg, #fffbf2 0%, #f7ecd5 100%);
+  --board-border: #925828;
+  --board-outline: #5c3014;
+  --board-shadow: 0 8px 0 #3b1c09, 0 14px 24px rgba(0, 0, 0, 0.35);
+
+  /* Completed & Unlocked Glowing Highlights */
+  --glow-completed: #22c55e;
+  --glow-completed-border: #16a34a;
+  --glow-completed-shadow: 0 0 18px rgba(34, 197, 94, 0.5);
+
+  --glow-active: #10b981;
+  --glow-active-border: #059669;
+  --glow-active-shadow: 0 0 18px rgba(16, 185, 129, 0.5);
+
+  /* Locked Dimmed Wooden Plaques */
+  --board-locked-bg: #272c38;
+  --board-locked-border: #4d3a2e;
+  --board-locked-shadow: 0 8px 0 #181c24, 0 12px 20px rgba(0, 0, 0, 0.4);
+
+  /* Chef's Parchment Scroll */
+  --scroll-bg: #21252f;
+  --scroll-border: #a16207;
+  --scroll-wood-dark: #652d0e;
+  --scroll-wood-light: #b45309;
+  --scroll-gold-knob: #facc15;
+  --scroll-text-title: #facc15;
+  --scroll-text-body: #f8fafc;
+
+  /* Culinary Progress Bar Plaque */
+  --progress-plaque-bg: linear-gradient(180deg, #5b3017 0%, #3e1e0d 100%);
+  --progress-plaque-border: #854d0e;
+  --progress-track-bg: #1c130d;
+  --progress-fill-gradient: linear-gradient(180deg, #4ade80 0%, #16a34a 100%);
+  --progress-fill-glow: 0 0 14px rgba(74, 222, 128, 0.6);
+
+  /* 3D Tactile Game Buttons */
+  --btn-start-bg: linear-gradient(180deg, #ff6b35 0%, #e63946 100%);
+  --btn-start-border: #ffedd5;
+  --btn-start-shadow: 0 5px 0 #991b1b;
+
+  --btn-replay-bg: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+  --btn-replay-border: #ffedd5;
+  --btn-replay-shadow: 0 5px 0 #9a3412;
+
+  --btn-locked-bg: linear-gradient(180deg, #64748b 0%, #475569 100%);
+  --btn-locked-shadow: 0 4px 0 #1e293b;
+
+  /* Text Colors */
+  --text-main: #2b1810;
+  --text-muted: #785848;
+  --text-cream: #fff8eb;
+  --text-gold: #facc15;
+
+  /* Navbar */
+  --nav-wood-bg: linear-gradient(180deg, #4a2511 0%, #2e1507 100%);
+  --nav-wood-border: #210d04;
+
+  /* Code Terminal In-Game */
+  --code-bg: #1c152b;
+  --code-text: #f5f3ff;
+  --code-selector: #ff548a;
+  --code-property: #38bdf8;
+  --code-punctuation: #a291c9;
+  --slot-empty-bg: rgba(56, 189, 248, 0.12);
+  --slot-empty-border: #38bdf8;
+  --chip-bg: #ffffff;
+  --chip-text: #2b1810;
+  --chip-border: #fed7aa;
+  --chip-hover-bg: #ffedd5;
+
+  /* Dining Table in Levels */
+  --table-border: #522912;
+  --table-wood-1: #c4834d;
+  --table-wood-2: #874921;
+  --cloth-pattern: rgba(255, 255, 255, 0.15);
+
+  /* Border Radii */
   --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-full: 9999px;
-  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.14);
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-pill: 9999px;
 }
 
-/* Dark Mode (Cozy Night Bistro) */
+/* Dark Mode: Cozy Candlelit Evening Kitchen */
 [data-theme="dark"] {
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-card: #1e293b;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --border-color: #334155;
-  
-  --table-border: #4a2e26;
-  --table-wood-1: #6d4c41;
-  --table-wood-2: #5d4037;
-  --cloth-pattern: rgba(255, 255, 255, 0.08);
-  --plate-bg: #334155;
-  --plate-border: #475569;
-  --plate-shadow: rgba(0, 0, 0, 0.35);
-  
-  --chip-bg: #334155;
-  --chip-text: #f8fafc;
-  --chip-border: #475569;
-  --chip-hover-bg: #475569;
+  --bg-primary: #26160c;
+  --bg-secondary: #2a1b12;
+  --bg-card: #2a1b12;
+  --border-color: #a16207;
+  --chip-bg: #382417;
+  --chip-text: #fff4e0;
+  --chip-border: #7c4422;
+  --chip-hover-bg: #4a2e1d;
+
+  --counter-wood-top: #3a190b;
+  --counter-wood-mid: #271005;
+  --counter-wood-dark: #190902;
+  --counter-wood-shadow: #0b0300;
+
+  --board-bg: #2d2420;
+  --board-bg-gradient: linear-gradient(180deg, #382c26 0%, #241c17 100%);
+  --board-border: #7c4422;
+  --board-outline: #4a2412;
+
+  --board-locked-bg: #1a1e28;
+  --board-locked-border: #382c24;
+
+  --text-main: #fff4e0;
+  --text-muted: #d4b8a4;
+
+  --nav-wood-bg: linear-gradient(180deg, #2b1206 0%, #170702 100%);
+  --nav-wood-border: #0d0401;
 }
 
 /* Base Reset */
@@ -86,25 +153,34 @@
 
 html, body {
   min-height: 100vh;
-  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-  background-color: var(--bg-primary);
-  color: var(--text-main);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: var(--font-main);
+  background-color: #3b1d0e;
+  background-image: 
+    linear-gradient(to bottom, rgba(30, 15, 8, 0.35) 0%, rgba(50, 24, 12, 0.88) 460px, #4a2412 100%),
+    url('../assets/backgrounds/kitchen_scene.jpg');
+  background-size: 100% auto, cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text-cream);
   overflow-x: hidden;
   line-height: 1.5;
+  letter-spacing: 0.3px;
+  -webkit-font-smoothing: antialiased;
 }
 
 button {
   cursor: pointer;
   border: none;
-  font-family: inherit;
-  transition: all 0.2s ease;
+  font-family: var(--font-main);
+  font-weight: 700;
+  transition: transform 0.1s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.1s ease, filter 0.15s ease;
   user-select: none;
 }
 
 button:focus-visible {
-  outline: 3px solid var(--accent-secondary);
-  outline-offset: 2px;
+  outline: 3px solid var(--text-gold);
+  outline-offset: 3px;
 }
 
 img {
@@ -114,8 +190,9 @@ img {
 
 /* Typography Helpers */
 h1, h2, h3, h4 {
-  font-weight: 700;
-  line-height: 1.25;
+  font-family: var(--font-title);
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 .emoji-icon {

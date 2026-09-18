@@ -58,6 +58,13 @@ class App {
     this.btnTrophyRestart = document.getElementById('btn-trophy-restart');
     this.btnTrophyMenu = document.getElementById('btn-trophy-menu');
     this.toast = document.getElementById('toast-feedback');
+
+    // About Us & Creators Elements
+    this.btnAboutNav = document.getElementById('btn-about-nav');
+    this.aboutModal = document.getElementById('about-modal');
+    this.btnCloseAbout = document.getElementById('btn-close-about');
+    this.btnAboutCloseBtn = document.getElementById('btn-about-close-btn');
+    this.aboutUsSection = document.getElementById('about-us-section');
   }
 
   init() {
@@ -72,7 +79,7 @@ class App {
     // Theme setup
     const savedTheme = storage.getTheme();
     document.documentElement.setAttribute('data-theme', savedTheme);
-    this.themeToggleBtn.textContent = savedTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+    this.themeToggleBtn.textContent = savedTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode ⚙';
 
     // Sound setup
     const isMuted = storage.isSoundMuted();
@@ -118,7 +125,7 @@ class App {
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       storage.setTheme(next);
-      this.themeToggleBtn.textContent = next === 'dark' ? '☀️ Light' : '🌙 Dark';
+      this.themeToggleBtn.textContent = next === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode ⚙';
     });
 
     // Sound toggle
@@ -237,6 +244,38 @@ class App {
         }
       });
     }
+
+    // About Us Navigation & Modal
+    if (this.btnAboutNav) {
+      this.btnAboutNav.addEventListener('click', () => {
+        sound.playClick();
+        if (this.aboutModal) {
+          this.showModal(this.aboutModal);
+        }
+      });
+    }
+
+    if (this.btnCloseAbout) {
+      this.btnCloseAbout.addEventListener('click', () => {
+        sound.playClick();
+        if (this.aboutModal) this.hideModal(this.aboutModal);
+      });
+    }
+
+    if (this.btnAboutCloseBtn) {
+      this.btnAboutCloseBtn.addEventListener('click', () => {
+        sound.playClick();
+        if (this.aboutModal) this.hideModal(this.aboutModal);
+      });
+    }
+
+    if (this.aboutModal) {
+      this.aboutModal.addEventListener('click', (e) => {
+        if (e.target === this.aboutModal) {
+          this.hideModal(this.aboutModal);
+        }
+      });
+    }
   }
 
   showHomeView() {
@@ -260,7 +299,7 @@ class App {
     // Progress bar
     const percentage = Math.round((count / total) * 100);
     this.progressFill.style.width = `${percentage}%`;
-    this.progressText.textContent = `${count} of ${total} Levels Mastered (${percentage}%)`;
+    this.progressText.textContent = `Culinary Progress: ${count} of ${total} Levels Mastered (${percentage}%)`;
 
     // Render cards
     this.levelsGrid.innerHTML = '';
@@ -268,33 +307,59 @@ class App {
       const isDone = storage.isLevelCompleted(lvl.id);
       const isUnlocked = storage.isLevelUnlocked(lvl.id);
       const card = document.createElement('div');
-      card.className = `level-card ${isDone ? 'completed' : ''} ${!isUnlocked ? 'locked' : ''}`;
+      
+      let stateClass = 'locked';
+      if (isDone) {
+        stateClass = 'completed';
+      } else if (isUnlocked) {
+        stateClass = 'active-stage';
+      }
+      card.className = `level-card ${stateClass}`;
       
       const thumb = lvl.characters ? lvl.characters[0].img : lvl.characterImg;
+      const foodThumb = lvl.foodImg || 'assets/foods/sushi.png';
+
+      // Status indicator badge
+      let badgeHtml = '';
+      if (isDone) {
+        badgeHtml = '<span class="card-status-badge completed">הושלם ⭐</span>';
+      } else if (!isUnlocked) {
+        badgeHtml = '<span class="card-status-badge locked" title="Locked Stage">🔒</span>';
+      }
+
+      // Button
+      let btnHtml = '';
+      if (!isUnlocked) {
+        btnHtml = '<button class="level-card-btn btn-locked" disabled>Locked</button>';
+      } else if (isDone) {
+        btnHtml = '<button class="level-card-btn btn-replay">Replay Level ↻</button>';
+      } else {
+        btnHtml = '<button class="level-card-btn btn-start">Start Level ▶</button>';
+      }
 
       card.innerHTML = `
-        <div>
-          <div class="level-card-header">
-            <div class="level-card-icon">
-              <img src="${thumb}" alt="${lvl.characterName || 'Guest'}">
-            </div>
-            <div>
-              <span class="level-card-number">Level ${lvl.id}</span>
-              <h4 class="level-card-title">${lvl.title}</h4>
+        ${badgeHtml}
+        <div class="level-card-top-row">
+          <div class="level-card-food-icon">
+            <img src="${foodThumb}" alt="${lvl.title} dish">
+          </div>
+          <div class="level-card-info-col">
+            <span class="level-card-number">LEVEL ${lvl.id}</span>
+            <h4 class="level-card-title">${lvl.title}</h4>
+            <div class="level-card-tags">
+              ${lvl.slots.map(s => `<span class="tech-tag">${s.property}</span>`).join('')}
             </div>
           </div>
-          <div class="level-card-tags">
-            ${lvl.slots.map(s => `<span class="tech-tag">${s.property}</span>`).join('')}
+          <div class="level-card-guest-icon">
+            <img src="${thumb}" alt="${lvl.characterName || 'Guest'}">
           </div>
         </div>
-        <div>
-          <button class="level-card-btn ${!isUnlocked ? 'locked-btn' : ''}" ${!isUnlocked ? 'disabled' : ''}>
-            ${!isUnlocked ? '🔒 Locked' : (isDone ? 'Replay Level ↻' : 'Start Level ▶')}
-          </button>
+        <div class="level-card-bottom-row">
+          ${btnHtml}
         </div>
       `;
 
-      card.addEventListener('click', () => {
+      card.addEventListener('click', (e) => {
         if (!isUnlocked) {
           sound.playError();
           this._showToast(`Level ${lvl.id} is locked! Complete Level ${lvl.id - 1} first to unlock.`, 'error');
