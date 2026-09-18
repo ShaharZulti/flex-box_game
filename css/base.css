@@ -1,0 +1,125 @@
+/* ==========================================================================
+   Base Styles, CSS Variables, Color Tokens & Typography
+   "World Bistro: Feed the Hungry Guests!"
+   ========================================================================== */
+
+:root {
+  /* Light Mode (Bright Bistro) */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  
+  /* Brand & Vibrant Accents */
+  --accent-primary: #ff5722;      /* Warm Bistro Orange */
+  --accent-primary-hover: #e64a19;
+  --accent-secondary: #3b82f6;    /* Friendly Chef Blue */
+  --accent-secondary-hover: #2563eb;
+  --accent-success: #10b981;      /* Emerald Victory */
+  --accent-success-hover: #059669;
+  --accent-warning: #f59e0b;
+  --accent-danger: #ef4444;       /* Error Red */
+  
+  /* Dining Table & Board Colors */
+  --table-border: #8d5b4c;
+  --table-wood-1: #e9c49a;
+  --table-wood-2: #dfb282;
+  --cloth-pattern: rgba(255, 255, 255, 0.45);
+  --plate-bg: #ffffff;
+  --plate-border: #e2e8f0;
+  --plate-shadow: rgba(0, 0, 0, 0.12);
+  
+  /* Code Editor Colors (Light) */
+  --code-bg: #1e1e2e;
+  --code-text: #cdd6f4;
+  --code-selector: #f38ba8;
+  --code-property: #89b4fa;
+  --code-punctuation: #a6adc8;
+  --slot-empty-bg: rgba(137, 180, 250, 0.15);
+  --slot-empty-border: #89b4fa;
+  --chip-bg: #f1f5f9;
+  --chip-text: #0f172a;
+  --chip-border: #cbd5e1;
+  --chip-hover-bg: #e2e8f0;
+
+  /* Shadows & Radius */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.14);
+}
+
+/* Dark Mode (Cozy Night Bistro) */
+[data-theme="dark"] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #1e293b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  
+  --table-border: #4a2e26;
+  --table-wood-1: #6d4c41;
+  --table-wood-2: #5d4037;
+  --cloth-pattern: rgba(255, 255, 255, 0.08);
+  --plate-bg: #334155;
+  --plate-border: #475569;
+  --plate-shadow: rgba(0, 0, 0, 0.35);
+  
+  --chip-bg: #334155;
+  --chip-text: #f8fafc;
+  --chip-border: #475569;
+  --chip-hover-bg: #475569;
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100vh;
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--accent-secondary);
+  outline-offset: 2px;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Typography Helpers */
+h1, h2, h3, h4 {
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.emoji-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+}

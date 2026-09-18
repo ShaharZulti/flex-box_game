@@ -1,0 +1,345 @@
+/* ==========================================================================
+   Main Application Controller: Views, Events, Modals & Life-cycle
+   ========================================================================== */
+
+import { LEVELS } from './levels.js';
+import { sound } from './audio.js';
+import { confetti } from './confetti.js';
+import { storage } from './storage.js';
+import { CodeBuilder } from './dnd.js';
+import { GameEngine } from './game.js';
+
+class App {
+  constructor() {
+    this.currentLevelIndex = 0;
+    this.codeBuilder = null;
+    this.gameEngine = null;
+
+    // DOM Elements
+    this.homeView = document.getElementById('home-view');
+    this.gameView = document.getElementById('game-view');
+    this.levelsGrid = document.getElementById('levels-grid');
+    this.progressFill = document.getElementById('progress-fill');
+    this.progressText = document.getElementById('progress-text');
+    
+    // Navbar Elements
+    this.navBrand = document.getElementById('nav-brand');
+    this.themeToggleBtn = document.getElementById('theme-toggle-btn');
+    this.soundToggleBtn = document.getElementById('sound-toggle-btn');
+    this.btnBackHome = document.getElementById('btn-back-home');
+    this.btnResetAllProgress = document.getElementById('btn-reset-all-progress');
+
+    // Game Elements
+    this.levelBadgeNumber = document.getElementById('level-badge-number');
+    this.levelBadgeTitle = document.getElementById('level-badge-title');
+    this.instructionBox = document.getElementById('instruction-content');
+    this.tableFrame = document.getElementById('dining-table');
+    this.targetLayer = document.getElementById('layer-targets');
+    this.foodLayer = document.getElementById('layer-food');
+    this.editorContainer = document.getElementById('code-editor-box');
+    this.chipsPool = document.getElementById('chips-pool');
+
+    // Action Buttons
+    this.btnServe = document.getElementById('btn-serve-check');
+    this.btnResetLevel = document.getElementById('btn-reset-level');
+    this.btnNextLevel = document.getElementById('btn-next-level');
+
+    // Modals & Toast
+    this.successModal = document.getElementById('success-modal');
+    this.btnModalNext = document.getElementById('btn-modal-next');
+    this.btnModalMenu = document.getElementById('btn-modal-menu');
+    this.trophyModal = document.getElementById('trophy-modal');
+    this.btnTrophyRestart = document.getElementById('btn-trophy-restart');
+    this.btnTrophyMenu = document.getElementById('btn-trophy-menu');
+    this.toast = document.getElementById('toast-feedback');
+  }
+
+  init() {
+    this._initPreferences();
+    this._initEngineAndBuilder();
+    this._bindEvents();
+    this.renderHomeDashboard();
+    this.showHomeView();
+  }
+
+  _initPreferences() {
+    // Theme setup
+    const savedTheme = storage.getTheme();
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    this.themeToggleBtn.textContent = savedTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+
+    // Sound setup
+    const isMuted = storage.isSoundMuted();
+    sound.setMuted(isMuted);
+    this.soundToggleBtn.textContent = isMuted ? '🔇 Muted' : '🔊 Sound';
+  }
+
+  _initEngineAndBuilder() {
+    this.codeBuilder = new CodeBuilder({
+      editorContainer: this.editorContainer,
+      chipsPool: this.chipsPool,
+      onValueChange: () => {
+        // Hide next level button if player modifies code after solving
+        this.btnNextLevel.style.display = 'none';
+      }
+    });
+
+    this.gameEngine = new GameEngine({
+      tableFrame: this.tableFrame,
+      targetLayer: this.targetLayer,
+      foodLayer: this.foodLayer,
+      onLevelComplete: (level) => {
+        this._handleLevelSuccess(level);
+      }
+    });
+  }
+
+  _bindEvents() {
+    // Navigation
+    this.navBrand.addEventListener('click', () => this.showHomeView());
+    this.btnBackHome.addEventListener('click', () => {
+      sound.playClick();
+      this.showHomeView();
+    });
+
+    // Theme toggle
+    this.themeToggleBtn.addEventListener('click', () => {
+      sound.playClick();
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      storage.setTheme(next);
+      this.themeToggleBtn.textContent = next === 'dark' ? '☀️ Light' : '🌙 Dark';
+    });
+
+    // Sound toggle
+    this.soundToggleBtn.addEventListener('click', () => {
+      const nextMute = !sound.isMuted();
+      sound.setMuted(nextMute);
+      storage.setSoundMuted(nextMute);
+      this.soundToggleBtn.textContent = nextMute ? '🔇 Muted' : '🔊 Sound';
+      if (!nextMute) sound.playClick();
+    });
+
+    // Reset all progress
+    if (this.btnResetAllProgress) {
+      this.btnResetAllProgress.addEventListener('click', () => {
+        if (confirm('Are you sure you want to reset all completed levels?')) {
+          storage.resetAllProgress();
+          this.renderHomeDashboard();
+          this._showToast('All progress has been reset.', 'info');
+        }
+      });
+    }
+
+    // Serve / Check solution button
+    this.btnServe.addEventListener('click', async () => {
+      const level = LEVELS[this.currentLevelIndex];
+      const values = this.codeBuilder.getValues();
+
+      // Check if all slots are filled
+      const missing = level.slots.some(s => !values[s.property]);
+      if (missing) {
+        sound.playError();
+        this._showToast('Please fill all CSS properties before serving!', 'error');
+        return;
+      }
+
+      this.btnServe.disabled = true;
+      const result = await this.gameEngine.checkSolution(values);
+      this.btnServe.disabled = false;
+
+      if (!result.success) {
+        this._showToast('Oops! Food missed the plates. Check your flex alignment!', 'error');
+      }
+    });
+
+    // Reset current level
+    this.btnResetLevel.addEventListener('click', () => {
+      sound.playClick();
+      this.codeBuilder.reset();
+      this.gameEngine.resetFoodStyles();
+      this.btnNextLevel.style.display = 'none';
+      this._showToast('Table reset to default.', 'info');
+    });
+
+    // Next Level button
+    this.btnNextLevel.addEventListener('click', () => {
+      sound.playClick();
+      this.goToNextLevel();
+    });
+
+    // Success Modal buttons
+    this.btnModalNext.addEventListener('click', () => {
+      this.hideModal(this.successModal);
+      this.goToNextLevel();
+    });
+
+    this.btnModalMenu.addEventListener('click', () => {
+      this.hideModal(this.successModal);
+      this.showHomeView();
+    });
+
+    // Trophy Modal buttons
+    this.btnTrophyRestart.addEventListener('click', () => {
+      this.hideModal(this.trophyModal);
+      this.loadLevel(0);
+    });
+
+    this.btnTrophyMenu.addEventListener('click', () => {
+      this.hideModal(this.trophyModal);
+      this.showHomeView();
+    });
+  }
+
+  showHomeView() {
+    this.homeView.classList.add('active');
+    this.gameView.classList.remove('active');
+    this.renderHomeDashboard();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  showGameView() {
+    this.homeView.classList.remove('active');
+    this.gameView.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderHomeDashboard() {
+    const completed = storage.getCompletedLevels();
+    const count = completed.length;
+    const total = LEVELS.length;
+
+    // Progress bar
+    const percentage = Math.round((count / total) * 100);
+    this.progressFill.style.width = `${percentage}%`;
+    this.progressText.textContent = `${count} of ${total} Levels Mastered (${percentage}%)`;
+
+    // Render cards
+    this.levelsGrid.innerHTML = '';
+    LEVELS.forEach((lvl, idx) => {
+      const isDone = completed.includes(lvl.id);
+      const card = document.createElement('div');
+      card.className = `level-card ${isDone ? 'completed' : ''}`;
+      
+      const thumb = lvl.characters ? lvl.characters[0].img : lvl.characterImg;
+      const foodThumb = lvl.characters ? lvl.characters[0].food : lvl.foodImg;
+
+      card.innerHTML = `
+        <div>
+          <div class="level-card-header">
+            <div class="level-card-icon">
+              <img src="${thumb}" alt="${lvl.characterName || 'Guest'}">
+            </div>
+            <div>
+              <span class="level-card-number">Level ${lvl.id}</span>
+              <h4 class="level-card-title">${lvl.title}</h4>
+            </div>
+          </div>
+          <div class="level-card-tags">
+            ${lvl.slots.map(s => `<span class="tech-tag">${s.property}</span>`).join('')}
+          </div>
+        </div>
+        <div>
+          <button class="level-card-btn">
+            ${isDone ? 'Replay Level ↻' : 'Start Level ▶'}
+          </button>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        sound.playClick();
+        this.loadLevel(idx);
+      });
+
+      this.levelsGrid.appendChild(card);
+    });
+  }
+
+  loadLevel(index) {
+    if (index < 0 || index >= LEVELS.length) return;
+    this.currentLevelIndex = index;
+    const level = LEVELS[index];
+
+    // Update Header & Badge
+    this.levelBadgeNumber.textContent = `Level ${level.id} of ${LEVELS.length}`;
+    this.levelBadgeTitle.textContent = level.title;
+
+    // Update Instructions
+    this.instructionBox.innerHTML = `
+      <h3>${level.title} &mdash; <em>${level.subtitle}</em></h3>
+      <p class="instruction-text">${level.instruction}</p>
+    `;
+
+    // Reset controls & board
+    this.btnNextLevel.style.display = 'none';
+    this.codeBuilder.loadLevel(level);
+    this.gameEngine.loadLevel(level);
+
+    this.showGameView();
+  }
+
+  _handleLevelSuccess(level) {
+    this.btnNextLevel.style.display = 'inline-flex';
+
+    const completed = storage.getCompletedLevels();
+    const allCleared = LEVELS.every(l => completed.includes(l.id));
+
+    if (allCleared) {
+      // Grand Finale!
+      setTimeout(() => {
+        this._showTrophyModal();
+      }, 1000);
+    } else {
+      // Regular level win modal
+      setTimeout(() => {
+        this._showSuccessModal(level);
+      }, 800);
+    }
+  }
+
+  _showSuccessModal(level) {
+    const modalDesc = document.getElementById('modal-success-desc');
+    if (modalDesc) {
+      modalDesc.innerHTML = `Magnificent job, Chef! The dishes aligned with culinary precision.`;
+    }
+    this.showModal(this.successModal);
+  }
+
+  _showTrophyModal() {
+    sound.playTrophyFanfare();
+    confetti.fire(160, 5000);
+    this.showModal(this.trophyModal);
+  }
+
+  goToNextLevel() {
+    if (this.currentLevelIndex + 1 < LEVELS.length) {
+      this.loadLevel(this.currentLevelIndex + 1);
+    } else {
+      this._showTrophyModal();
+    }
+  }
+
+  showModal(modal) {
+    modal.classList.add('active');
+  }
+
+  hideModal(modal) {
+    modal.classList.remove('active');
+  }
+
+  _showToast(msg, type = 'info') {
+    if (!this.toast) return;
+    this.toast.textContent = msg;
+    this.toast.className = `toast-feedback show ${type}`;
+    setTimeout(() => {
+      this.toast.classList.remove('show');
+    }, 3200);
+  }
+}
+
+// Instantiate and initialize on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+  const app = new App();
+  app.init();
+});

@@ -1,0 +1,203 @@
+/* ==========================================================================
+   Code Builder & Drag-and-Drop CSS Editor Styles
+   ========================================================================== */
+
+.code-editor-container {
+  background: var(--code-bg);
+  color: var(--code-text);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  font-family: 'Fira Code', 'Consolas', 'Courier New', monospace;
+  font-size: 0.95rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.editor-window-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.window-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.dot.red { background: #ff5f56; }
+.dot.yellow { background: #ffbd2e; }
+.dot.green { background: #27c93f; }
+
+.window-filename {
+  color: var(--code-punctuation);
+  font-size: 0.75rem;
+  margin-left: 8px;
+}
+
+.code-line {
+  line-height: 2.2;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.code-indent {
+  padding-left: 24px;
+}
+
+.code-selector {
+  color: var(--code-selector);
+  font-weight: bold;
+}
+
+.code-property {
+  color: var(--code-property);
+}
+
+.code-punctuation {
+  color: var(--code-punctuation);
+}
+
+.code-val-fixed {
+  color: #a6e3a1; /* green */
+}
+
+/* --------------------------------------------------------------------------
+   Interactive Drop Slots
+   -------------------------------------------------------------------------- */
+.drop-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 130px;
+  height: 32px;
+  padding: 2px 10px;
+  background: var(--slot-empty-bg);
+  border: 2px dashed var(--slot-empty-border);
+  border-radius: var(--radius-sm);
+  color: var(--code-property);
+  font-size: 0.85rem;
+  vertical-align: middle;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.drop-slot.drag-over {
+  background: rgba(137, 180, 250, 0.35);
+  border-color: #89b4fa;
+  transform: scale(1.04);
+}
+
+.drop-slot.filled {
+  border-style: solid;
+  border-color: var(--accent-success);
+  background: rgba(16, 185, 129, 0.2);
+  color: #a6e3a1;
+  font-weight: 600;
+}
+
+.drop-slot .slot-placeholder {
+  color: rgba(205, 214, 244, 0.45);
+  font-style: italic;
+  font-size: 0.8rem;
+  pointer-events: none;
+}
+
+.drop-slot .chip-remove-x {
+  margin-left: 8px;
+  cursor: pointer;
+  color: #f38ba8;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.drop-slot .chip-remove-x:hover {
+  color: #ff5555;
+  transform: scale(1.2);
+}
+
+/* --------------------------------------------------------------------------
+   Available Code Chips Tray (Bottom)
+   -------------------------------------------------------------------------- */
+.chips-tray-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.chips-tray-header {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chips-tray-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: normal;
+  text-transform: none;
+}
+
+.chips-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 44px;
+}
+
+.code-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  border: 1px solid var(--chip-border);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: grab;
+  transition: all 0.2s ease;
+  user-select: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.code-chip:hover {
+  background: var(--chip-hover-bg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-secondary);
+}
+
+.code-chip:active {
+  cursor: grabbing;
+}
+
+.code-chip.in-use {
+  opacity: 0.4;
+  pointer-events: none;
+  border-style: dashed;
+}
+
+.code-chip .chip-drag-handle {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}

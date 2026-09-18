@@ -1,0 +1,188 @@
+/* ==========================================================================
+   Board Styles: Fixed 500x500 Dining Table, Guest Targets, Moving Food Items
+   ========================================================================== */
+
+/* Scaler container to ensure board is fixed 500x500 across ALL screen sizes */
+.board-viewport-scaler {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.table-frame {
+  width: 500px;
+  height: 500px;
+  min-width: 500px;
+  min-height: 500px;
+  background: var(--table-wood-1);
+  background-image: 
+    radial-gradient(circle at 50% 50%, var(--table-wood-1) 0%, var(--table-wood-2) 100%),
+    linear-gradient(45deg, var(--cloth-pattern) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--cloth-pattern) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--cloth-pattern) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--cloth-pattern) 75%);
+  background-size: 100% 100%, 40px 40px, 40px 40px, 40px 40px, 40px 40px;
+  border: 14px solid var(--table-border);
+  border-radius: var(--radius-lg);
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.25), var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+/* Scaling for smaller screens without changing fixed 500x500 coordinate space */
+@media (max-width: 560px) {
+  .board-viewport-scaler {
+    height: 360px;
+  }
+  .table-frame {
+    transform: scale(0.68);
+    transform-origin: center center;
+  }
+}
+
+@media (max-width: 400px) {
+  .board-viewport-scaler {
+    height: 310px;
+  }
+  .table-frame {
+    transform: scale(0.58);
+    transform-origin: center center;
+  }
+}
+
+/* Shared Flex Container Layers */
+.layer-targets,
+.layer-food {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  display: flex;
+}
+
+/* --------------------------------------------------------------------------
+   Target Layer: Stationary Hungry Guests with Empty Plates
+   -------------------------------------------------------------------------- */
+.layer-targets {
+  z-index: 10;
+  pointer-events: none;
+}
+
+.target-guest-slot {
+  width: 120px;
+  height: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.target-guest-slot .guest-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border: 3px solid #ffffff;
+  background: #ffffff;
+  position: relative;
+}
+
+.target-guest-slot .guest-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Target plate landing zone indicator */
+.target-guest-slot::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  width: 58px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.4);
+  border: 2px dashed rgba(255, 87, 34, 0.7);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 87, 34, 0.3);
+  animation: pulse-target 2s infinite ease-in-out;
+}
+
+@keyframes pulse-target {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+/* --------------------------------------------------------------------------
+   Food Layer: Movable Dishes (Sushi, Pizza, Tacos, Drinks)
+   -------------------------------------------------------------------------- */
+.layer-food {
+  z-index: 20;
+}
+
+.food-item-dish {
+  width: 120px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  /* Smooth gliding animation when CSS flex properties change */
+  transition: all 0.5s cubic-bezier(0.34, 1.3, 0.64, 1);
+  will-change: transform, margin;
+}
+
+.food-inner-plate {
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #f1f5f9 70%, #e2e8f0 100%);
+  border-radius: 50%;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.food-inner-plate img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.15));
+}
+
+.food-item-dish.served .food-inner-plate {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+  border-color: #10b981;
+}
+
+/* Item Order Badge (for Direction levels) */
+.item-order-badge {
+  position: absolute;
+  top: 4px;
+  right: 10px;
+  background: var(--accent-primary);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 800;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  z-index: 25;
+}

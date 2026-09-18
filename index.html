@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Bistro: Feed the Hungry Guests! | Flexbox Learning Game</title>
+  <meta name="description" content="An interactive educational game teaching CSS Flexbox through culinary challenges. Master justify-content, align-items, flex-direction, and flex-wrap!">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/board.css">
+  <link rel="stylesheet" href="css/code-builder.css">
+  <link rel="stylesheet" href="css/animations.css">
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍🍳</text></svg>">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Main Sticky Navbar -->
+    <header class="navbar">
+      <div class="nav-brand" id="nav-brand" title="Return to Menu">
+        <span>👨‍🍳 World Bistro</span>
+        <span class="brand-badge">Flexbox Edition</span>
+      </div>
+
+      <div class="nav-actions">
+        <button id="theme-toggle-btn" class="icon-btn" aria-label="Toggle Dark or Light Mode">
+          🌙 Dark
+        </button>
+        <button id="sound-toggle-btn" class="icon-btn" aria-label="Toggle Sound Effects">
+          🔊 Sound
+        </button>
+      </div>
+    </header>
+
+    <!-- Canvas for Confetti Fireworks -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- ====================================================================
+         VIEW 1: HOME SCREEN / LEVEL SELECT DASHBOARD
+         ==================================================================== -->
+    <main id="home-view" class="view-section active">
+      <section class="hero-banner">
+        <h1 class="hero-title">World Bistro: Feed the Hungry Guests!</h1>
+        <p class="hero-subtitle">
+          Hungry diners from around the globe are waiting at your restaurant tables! 
+          Use your <strong>CSS Flexbox</strong> skills to align and slide delicious dishes directly onto their empty plates.
+        </p>
+      </section>
+
+      <!-- Progress Dashboard -->
+      <section class="progress-dashboard">
+        <div class="progress-header">
+          <span>Culinary Progress</span>
+          <span id="progress-text">0 of 7 Levels Mastered (0%)</span>
+        </div>
+        <div class="progress-bar-track">
+          <div id="progress-fill" class="progress-bar-fill"></div>
+        </div>
+      </section>
+
+      <!-- Levels Grid -->
+      <section class="levels-grid" id="levels-grid">
+        <!-- Rendered dynamically by app.js -->
+      </section>
+
+      <div style="text-align: center; margin-top: 10px;">
+        <button id="btn-reset-all-progress" class="icon-btn" style="color: var(--text-muted); font-size: 0.85rem;">
+          ⚠️ Reset All Saved Progress
+        </button>
+      </div>
+    </main>
+
+    <!-- ====================================================================
+         VIEW 2: GAME WORKSPACE (KITCHEN & DINING TABLE)
+         ==================================================================== -->
+    <main id="game-view" class="view-section">
+      <!-- Game Sub-Navigation -->
+      <div class="game-sub-nav">
+        <button id="btn-back-home" class="btn-secondary">
+          ⬅ Back to Menu
+        </button>
+
+        <div class="level-title-badge">
+          <span id="level-badge-number" class="level-counter-pill">Level 1 of 7</span>
+          <span id="level-badge-title">Tokyo Sushi Rush</span>
+        </div>
+      </div>
+
+      <!-- Instruction Box -->
+      <div class="instruction-box" id="instruction-content">
+        <!-- Injected dynamically -->
+      </div>
+
+      <!-- Split Layout: Table on Left, Code Builder on Right -->
+      <div class="game-layout-grid">
+        <!-- Left: Fixed Dining Table Board -->
+        <div class="left-panel">
+          <div class="board-viewport-scaler">
+            <div class="table-frame" id="dining-table">
+              <!-- Stationary Targets (Guests with empty plates) -->
+              <div class="layer-targets" id="layer-targets"></div>
+
+              <!-- Movable Food Items (Dishes) -->
+              <div class="layer-food" id="layer-food"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Drag & Drop CSS Editor & Available Chips -->
+        <div class="right-panel">
+          <!-- Code Editor Simulation Box -->
+          <div class="code-editor-container" id="code-editor-box">
+            <!-- Dynamic CSS slots injected by dnd.js -->
+          </div>
+
+          <!-- Draggable Chips Options Tray -->
+          <div class="chips-tray-section">
+            <div class="chips-tray-header">
+              <span>Available Flexbox Properties</span>
+              <span class="chips-tray-hint">Drag into slot or tap to assign</span>
+            </div>
+            <div class="chips-pool" id="chips-pool">
+              <!-- Chips rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-toolbar">
+            <button id="btn-serve-check" class="btn-primary">
+              🍽️ Serve Food / Check Solution
+            </button>
+            <button id="btn-reset-level" class="btn-secondary" title="Reset table to default state">
+              🔄 Reset Table
+            </button>
+            <button id="btn-next-level" class="btn-success">
+              Next Level ➡️
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p>World Bistro Flexbox Game &bull; College Web Development Assignment 2 &bull; Built with Pure HTML5, CSS3 &amp; Vanilla JavaScript</p>
+    </footer>
+  </div>
+
+  <!-- ====================================================================
+       MODALS
+       ==================================================================== -->
+  <!-- Level Success Modal -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal-card">
+      <div class="modal-icon">
+        <span style="font-size: 5rem;">🎉</span>
+      </div>
+      <h2 class="modal-title">Level Completed!</h2>
+      <p class="modal-desc" id="modal-success-desc">
+        Delicious! The food was served with culinary precision.
+      </p>
+      <div class="modal-actions">
+        <button id="btn-modal-menu" class="btn-secondary">Back to Menu</button>
+        <button id="btn-modal-next" class="btn-primary">Next Level ➡️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grand Trophy Celebration Modal -->
+  <div class="modal-overlay" id="trophy-modal">
+    <div class="modal-card">
+      <div class="modal-icon">
+        <img src="assets/icons/trophy.jpg" alt="Golden Chef Trophy">
+      </div>
+      <h2 class="modal-title">🏆 Grand Master Chef!</h2>
+      <p class="modal-desc">
+        Incredible achievement! You have successfully mastered all 7 levels and brought culinary harmony across the globe with CSS Flexbox!
+      </p>
+      <div class="modal-actions">
+        <button id="btn-trophy-menu" class="btn-secondary">Menu Dashboard</button>
+        <button id="btn-trophy-restart" class="btn-primary">Play Again ↻</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast-feedback" class="toast-feedback" role="alert"></div>
+
+  <!-- Application Entry Point (ES6 Module) -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
